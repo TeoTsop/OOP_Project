@@ -119,12 +119,12 @@ int main (int argc, char* argv[]) {
     }
 
     //All parameters are set! Now time to check and get the target position(s)!
-    vector<Position> targetPositions;
+    vector<Position*> targetPositions;
     while (1) {
         if (checkArgumentValidity(*argv[i+1], argv) == false || checkArgumentValidity(*argv[i+2], argv) == false) {return -1;}
-        Position newTargetPosition = new Position(argv[i+1], argv[i+2]); //Create a position object for the target coordinates
-        if (newTargetPosition.getX() <= dimX && newTargetPosition.getY() <= dimY) {targetPositions.push_back(newTargetPosition);} //Chek if the position is in bounds of the grid
-        else {cout << "Position (" << newTargetPosition.getX() << " , " << newTargetPosition.getY() << ") falls out of bounds. Please try again!" << endl;}
+        Position* newTargetPosition = new Position(stoi(argv[i+1]), stoi(argv[i+2])); //Create a position object for the target coordinates
+        if (newTargetPosition->getX() <= dimX && newTargetPosition->getY() <= dimY) {targetPositions.push_back(newTargetPosition);} //Chek if the position is in bounds of the grid
+        else {cout << "Position (" << newTargetPosition->getX() << " , " << newTargetPosition->getY() << ") falls out of bounds. Please try again!" << endl;}
     }
     //Case of targed coordinated not given
     if (targetPositions.empty() == false) {
