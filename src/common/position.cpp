@@ -4,6 +4,7 @@ using namespace std;
 
 
 Position::Position(int X=0, int Y=0):x(X), y(Y) {} 
+Position::~Position() {}
 bool Position::operator==(const Position& other) const {
     return x == other.getX() && y==other.getY();
 }
