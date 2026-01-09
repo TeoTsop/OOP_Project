@@ -4,8 +4,8 @@
 using namespace std;
 
 // Constructor
-StaticObject::StaticObject(const string& id, const Position& pos, char glyph)
-    : WorldObject(id, pos, glyph) {
+StaticObject::StaticObject(const string& id, char glyph, const Position& pos)
+    : WorldObject(id, glyph, pos) {
 }
 
 // Update (Only traffic lights update, the rest remain in their position forever)
