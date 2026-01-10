@@ -2,7 +2,7 @@
 
 #include "common/enums.h" //In order to use the enums ObjectType, Direction, SpeedState
 #include "common/position.h" //In order to be able to trach the position of the moving vehicle
-#include "WorldObject.h" //Included since WorldObject is a parent function for all object in the grid
+#include "WorldObject.h" //Included since WorldObject is the parent class for all object in the grid
 
 #include <string> //In order to be able to use the string variable type
 

@@ -10,7 +10,7 @@ using namespace std;
 //Forward declaration
 class GridWorld;
 
-//Constrctor for the moving object parent class
+//Constrctor for a moving object
 MovingObject::MovingObject (const string& id, char glyph, Position position,
                             ObjectType objectType, SpeedState speedState,
                             Direction direction)
@@ -35,8 +35,8 @@ void MovingObject::update (GridWorld& world) {
 
 }
 
+//Destructor a the moving object
 MovingObject::~MovingObject () {
 
 //Empty for now
 }
-
