@@ -16,8 +16,8 @@ enum SpeedState {STOPPED,
 
 //All possible objects in the grid
 enum ObjectType {AUTONOMUS_VEHICLE,
-                 MOVING_VEHICLE,
-                 STOPPED_VEHICLE,
+                 MOVING_CAR,
+                 STOPPED_CAR,
                  MOVING_BIKE,
                  TRAFFIC_SIGN,
                  TRAFFIC_LIGHT
