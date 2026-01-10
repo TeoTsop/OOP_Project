@@ -6,6 +6,7 @@
 #include <string>
 
 class StaticObject : public WorldObject {
+public:
     // Constructor
     StaticObject(const std::string& id, const Position& pos, char glyph);
 

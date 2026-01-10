@@ -23,5 +23,5 @@ public:
     // Getters
     const string& getId() const;
     const Position& getPosition() const;
-    char getGlyph() const;
+    virtual char getGlyph() const;
 };
