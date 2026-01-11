@@ -7,12 +7,15 @@
 
 #pragma once
 
+//The class for the moving car
 class MovingCar : public MovingObject {
     public:
+        //Constructor for the moving car
         MovingCar (const std::string& id, const Position& position,
                    SpeedState speedState, Direction direction);
 
-        void update (GridWorld& world) override;
+        //Function to update the position, direction and speed of the car
+        void update () override;
 
         //Destructor for the moving car
         ~MovingCar ();

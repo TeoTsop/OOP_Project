@@ -19,20 +19,18 @@ class MovingObject : public WorldObject {
         Direction direction;
     public:
         //Constructor for a moving object
-        MovingObject (const std::string& id, char glyph, Position position,
-                      ObjectType objectType, SpeedState speedState,
+        MovingObject (const std::string& id, char glyph, const Position& position,
+                      const ObjectType& objectType, SpeedState speedState,
                       Direction direction);
         
         //Virtual getters for the moving object's id, glyph, position, speed, direction
         SpeedState getSpeedState ();
         Direction getDirection ();
 
-        //Virtual function for the moving vehicles to be able to avoid collision with other objects
-        //except for the self driving car
-        virtual void handleCrash ();
+        //Virtua
 
         //Virtual function to update a moving object's state (overrides WorldObject)
-        virtual void update (class GridWorld& world) override;
+        virtual void update () = 0;
 
         //Virtual destructor for a moving object
         virtual ~MovingObject ();

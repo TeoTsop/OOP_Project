@@ -11,29 +11,17 @@ using namespace std;
 class GridWorld;
 
 //Constrctor for a moving object
-MovingObject::MovingObject (const string& id, char glyph, Position position,
-                            ObjectType objectType, SpeedState speedState,
+MovingObject::MovingObject (const string& id, char glyph, const Position& position,
+                            const ObjectType& objectType, SpeedState speedState,
                             Direction direction)
     : WorldObject(id, glyph, position, objectType), speedState(speedState), direction(direction) {
 
 //Empty for now
-
 }
 
 //Getter functions for the speed and direction of the moving vehicle
 SpeedState MovingObject::getSpeedState () { return speedState; }
 Direction MovingObject::getDirection () { return direction; }
-
-void MovingObject::handleCrash () {
-
-
-
-}
-
-void MovingObject::update (GridWorld& world) {
-
-
-}
 
 //Destructor a the moving object
 MovingObject::~MovingObject () {

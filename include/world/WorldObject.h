@@ -7,24 +7,32 @@
 
 using namespace std;
 
-class GridWorld; // forward declaration
-
 class WorldObject {
     // Fields to be used by objects that belong to a sub-class of this class  
     protected:
-        string id;
-        char glyph;
-        Position position;
-        enum ObjectType objectType;
+        string id;                  //The id of the world object
+        char glyph;                 //The glyph of the world object
+        Position position;          //The position of the world object
+        enum ObjectType objectType; //The type of the world object
 
-public:
-    WorldObject(const string& id, const Position& pos, char glyph);
-    WorldObject(const string& id, char glyph, const Position& pos, enum ObjectType ObjectType);
-    virtual ~WorldObject();
-    virtual void update(GridWorld& world) = 0; // WorldObject is an abstract class
+    public:
+
+        //Constructor for the world object
+        WorldObject(const string& id, char glyph, const Position& pos, const ObjectType& ObjectType);
     
-    // Getters
-    const string& getId() const;
-    const Position& getPosition() const;
-    virtual char getGlyph() const;
+        //Getters for the id, position, glyph and type of each object
+        const string& getId() const;
+        const Position& getPosition() const;
+        const ObjectType& getObjectType() const;
+        virtual char getGlyph() const;
+
+        //Setter for the position
+        void setPosition(int x, int y);
+
+        //WorldObject is an abstract class therefore the update function will be called
+        //by each one of the objects in the grid separately
+        virtual void update() = 0;
+        
+        //Destructor for the world object
+        virtual ~WorldObject();
 };
