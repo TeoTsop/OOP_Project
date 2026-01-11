@@ -2,7 +2,7 @@
 #include <iostream>
 
 TrafficLight::TrafficLight(const std::string& id, const Position& position, const TrafficLightColor& startColor)
-    :StaticObject(id, getGlyph(), position, TRAFFIC_LIGHT), color(startColor), tickCount(0)
+    :StaticObject(id, chooseGlyph(), position, TRAFFIC_LIGHT), color(startColor), tickCount(0)
 {
     std::cout << "[+LIGHT: " << id << "] Initialized at ("
               << position.getX() << ", " << position.getY()
@@ -12,7 +12,7 @@ TrafficLight::TrafficLight(const std::string& id, const Position& position, cons
 }
 
 // update state machine
-void TrafficLight::update(GridWorld& world) {
+void TrafficLight::update() {
     tickCount++;
 
     switch (color) {
@@ -45,7 +45,7 @@ void TrafficLight::update(GridWorld& world) {
 }
 
 // Returns glyph according to color
-char TrafficLight::getGlyph() const {
+char TrafficLight::chooseGlyph() const {
     switch (color) {
         case RED:    return 'R';
         case YELLOW: return 'Y';

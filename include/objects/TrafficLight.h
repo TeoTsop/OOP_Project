@@ -19,10 +19,10 @@ public:
     TrafficLight(const std::string& id, const Position& position, const TrafficLightColor& color);
 
     // overrides update of base class StaticObject
-    void update (GridWorld& world) override;
+    void update () override;
 
     // override virtual getGlyph()
-    char getGlyph() const override;
+    char chooseGlyph() const;
 
     // getters
     TrafficLightColor getColor() const { return color; }

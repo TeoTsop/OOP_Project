@@ -5,7 +5,5 @@
 class StationaryVehicle : public StaticObject {
 public:
     StationaryVehicle(const std::string& id, const Position& position);
-
-    char getGlyph() const override;
 };
 

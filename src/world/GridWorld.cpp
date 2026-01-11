@@ -87,7 +87,7 @@ void GridWorld::update() {
     {
         WorldObject* obj = objects[i].get();
         // Object updates
-        obj->update(*this);
+        obj->update();
         // If an object gets out of bounds it gets deleted
         if (!isInBounds(obj->getPosition())) {
             cout << "[-WORLD] Object " << obj->getId() << " moved out of bounds and will be removed." << endl;

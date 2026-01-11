@@ -8,6 +8,3 @@ StationaryVehicle::StationaryVehicle(const std::string& id, const Position& posi
               << position.getX() << ", " << position.getY() << ")\n";
 }
 
-char StationaryVehicle::getGlyph() const {
-    return glyph;
-}

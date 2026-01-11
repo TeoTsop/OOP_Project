@@ -2,7 +2,7 @@
 #include <iostream>
 
 TrafficSign::TrafficSign(const std::string& id, const Position& position, TrafficSignType type): 
-StaticObject(id, getGlyph(), position, TRAFFIC_SIGN) {
+StaticObject(id, chooseGlyph(), position, TRAFFIC_SIGN) {
    
     std::cout << "[+SIGN: " << id << "] Created at ("
               << position.getX() << ", " << position.getY()
@@ -14,7 +14,7 @@ TrafficSignType TrafficSign::getSignType() const {
 }
 
 
-char TrafficSign::getGlyph() const {
+char TrafficSign::chooseGlyph() const {
     switch (signType) {
         case STOP:
             return 'S';
