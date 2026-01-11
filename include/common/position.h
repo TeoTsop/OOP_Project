@@ -10,16 +10,23 @@ private:
     int x;
     int y;
 public:
-    // Constructor
+    //Constructor
     Position(int x, int y);
-    // Destructor
-    ~Position();
-    // Equality Operator
+    
+    //Equality Operator
     bool operator==(const Position& other) const; 
-    // Manhattan Distance
+    
+    //Manhattan Distance
     int ManDist(const Position& other);
-    // Getters
+    
+    //Getters
     int getX() const;
     int getY() const;
+    
+    //Setters
+    void setX(int newX);
+    void setY(int newY);
 
+    //Destructor
+    ~Position();
 };
