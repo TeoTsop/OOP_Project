@@ -24,7 +24,7 @@ class WorldObject {
         const string& getId() const;
         const Position& getPosition() const;
         const ObjectType& getObjectType() const;
-        virtual char getGlyph() const;
+        char getGlyph() const;
 
         //Setter for the position
         void setPosition(int x, int y);
