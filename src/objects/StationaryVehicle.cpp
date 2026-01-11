@@ -2,12 +2,12 @@
 #include <iostream>
 
 StationaryVehicle::StationaryVehicle(const std::string& id, const Position& position)
-    : StaticObject(id, position, 'P')   // 'P' (Parked car)
+    : StaticObject(id, 'P', position, ObjectType::STOPPED_CAR)   // 'P' (Parked car)
 {
     std::cout << "[+PARKED: " << id << "] Parked at ("
               << position.getX() << ", " << position.getY() << ")\n";
 }
 
 char StationaryVehicle::getGlyph() const {
-    return glyph;  
+    return glyph;
 }

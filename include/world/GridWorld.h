@@ -10,16 +10,16 @@
 
 class GridWorld {
 private:
-    int width;
-    int height;
-    int currentTick;
-
-    // Τα αντικείμενα του κόσμου
-    vector<unique_ptr<WorldObject> > objects;
+    int width;                                                  //The width of the world
+    int height;                                                 //The height of the world
+    int numOfMovingCars, numOfMovingBikes;                      //The number of moving cars and bikes in the grid
+    int numOfTrafficLights, numOfStopSigns, numOfStoppedCars;   //The number of traffic lights, stop signs and stopped cars in the grid
+    int currentTick;                                            //The current tick the world is in
+    vector<unique_ptr<WorldObject>> objects;                    //The objects inside the world
 
 public:
-    // Constructor
-    GridWorld(int w = 40, int h = 40);
+    //Constructor of the grid world
+    GridWorld(int width, int height, int nOMC, int nOMB, int nOTL, int nOSS, int nOSC);
 
     // Adds objects 
     void addObject(unique_ptr<WorldObject> obj);

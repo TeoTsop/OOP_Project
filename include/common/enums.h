@@ -26,4 +26,13 @@ enum ObjectType {AUTONOMUS_VEHICLE,
 //All traffic colors
 enum TrafficLightColor {RED,
                         YELLOW,
-                        GREEN};
+                        GREEN
+                       };
+
+//All possible traffic signs
+enum TrafficSign {STOP,
+                  SPEED_LIMIT,
+                  POSITION,
+                  TURN_LEFT,
+                  TURN_RIGHT
+                 };

@@ -12,17 +12,12 @@ using namespace std;
 class GridWorld;
 
 //Constrctor for a moving car
-MovingCar::MovingCar (const string& id, char glyph, Position position,
-                      ObjectType objectType, SpeedState speedState,
-                      Direction direction)
-    : MovingObject(id, glyph, position, "MOVING_CAR", speedState(speedState), direction(direction)) {
+MovingCar::MovingCar (const string& id, const Position& position,
+                      SpeedState speedState, Direction direction)
+    : MovingObject(id, 'C', position, ObjectType::MOVING_CAR, speedState, direction) {
 
 }
 
 void MovingObject::update (GridWorld& world) {}
 
-MovingCar::~MovingCar () {
-
-    this->numberOfMovingCars--;
-
-}
+MovingCar::~MovingCar () {}
