@@ -14,7 +14,7 @@ public:
     virtual ~StaticObject() = default;
 
     // Update (overrides WorldObject)
-    virtual void update (class GridWorld& world) override;
+    virtual void update () override;
 
 };
 

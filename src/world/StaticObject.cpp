@@ -9,5 +9,5 @@ StaticObject::StaticObject(const string& id, char glyph, const Position& pos, co
 }
 
 // Update (Only traffic lights update, the rest remain in their position forever)
-void StaticObject::update(GridWorld& world) {
+void StaticObject::update() {
 }
