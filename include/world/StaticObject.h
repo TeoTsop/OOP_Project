@@ -8,7 +8,7 @@
 class StaticObject : public WorldObject {
 public:
     // Constructor
-    StaticObject(const std::string& id, char glyph, const Position& pos);
+    StaticObject(const std::string& id, char glyph, const Position& pos, const ObjectType& ObjectType);
 
     // Virtual destructor
     virtual ~StaticObject() = default;

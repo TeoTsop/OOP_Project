@@ -30,9 +30,8 @@ enum TrafficLightColor {RED,
                        };
 
 //All possible traffic signs
-enum TrafficSign {STOP,
-                  SPEED_LIMIT,
-                  POSITION,
-                  TURN_LEFT,
-                  TURN_RIGHT
-                 };
+enum TrafficSignType {STOP,
+                      SPEED_LIMIT,
+                      TURN_LEFT,
+                      TURN_RIGHT
+                     };

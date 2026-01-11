@@ -1,8 +1,8 @@
 #include "../../include/objects/TrafficLight.h"
 #include <iostream>
 
-TrafficLight::TrafficLight(const std::string& id, const Position& position, TrafficLightColor startColor)
-    : StaticObject(id, position, 'R'), color(startColor), tickCount(0)
+TrafficLight::TrafficLight(const std::string& id, const Position& position, const TrafficLightColor& startColor)
+    :StaticObject(id, getGlyph(), position, TRAFFIC_LIGHT), color(startColor), tickCount(0)
 {
     std::cout << "[+LIGHT: " << id << "] Initialized at ("
               << position.getX() << ", " << position.getY()
@@ -16,23 +16,26 @@ void TrafficLight::update(GridWorld& world) {
     tickCount++;
 
     switch (color) {
-        case TrafficLightColor::RED:
+        case RED:
             if (tickCount >= RED_DURATION) {
-                color = TrafficLightColor::GREEN;
+                color = GREEN;
+                this->glyph='G';
                 tickCount = 0;
             }
             break;
 
-        case TrafficLightColor::GREEN:
+        case GREEN:
             if (tickCount >= GREEN_DURATION) {
-                color = TrafficLightColor::YELLOW;
+                color = YELLOW;
+                this->glyph='Y';
                 tickCount = 0;
             }
             break;
 
-        case TrafficLightColor::YELLOW:
+        case YELLOW:
             if (tickCount >= YELLOW_DURATION) {
-                color = TrafficLightColor::RED;
+                color = RED;
+                this->glyph='R';
                 tickCount = 0;
             }
             break;
@@ -44,9 +47,9 @@ void TrafficLight::update(GridWorld& world) {
 // Returns glyph according to color
 char TrafficLight::getGlyph() const {
     switch (color) {
-        case TrafficLightColor::RED:    return 'R';
-        case TrafficLightColor::YELLOW: return 'Y';
-        case TrafficLightColor::GREEN:  return 'G';
+        case RED:    return 'R';
+        case YELLOW: return 'Y';
+        case GREEN:  return 'G';
     }
     return '?'; 
 }
