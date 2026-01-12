@@ -23,6 +23,9 @@ TrafficSign::TrafficSign(const std::string& id, const Position& position, Traffi
 
 }
 
+//Function for world update (does nothing)
+void update () { return; }
+
 //Getter for the type of the traffic sign
 TrafficSignType TrafficSign::getSignType() const { return signType; }
 

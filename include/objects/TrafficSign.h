@@ -7,16 +7,19 @@
 #include "../world/StaticObject.h" //Included since the Static Object class is the parent class of the traffic signs
 
 class TrafficSign : public StaticObject {
-private:
-    TrafficSignType signType;
+    private:
+        TrafficSignType signType;
 
-public:
-    //Constructor for the traffic sign
-    TrafficSign(const std::string& id, const Position& position, TrafficSignType type);
+    public:
+        //Constructor for the traffic sign
+        TrafficSign(const std::string& id, const Position& position, TrafficSignType type);
 
-    //Getter for the traffic sign type
-    TrafficSignType getSignType() const;
+        //Getter for the traffic sign type
+        TrafficSignType getSignType() const;
 
-    //Destructor for the traffic sign
-    ~TrafficSign ();
+        //Function for world update (does nothing)
+        void update ();
+
+        //Destructor for the traffic sign
+        ~TrafficSign ();
 };

@@ -10,6 +10,9 @@ class StationaryVehicle : public StaticObject {
         //Constructor for the stationary vehicle
         StationaryVehicle(const std::string& id, const Position& position);
 
+        //Function for world update (does nothing)
+        void update();
+
         //Destructor for the stationary vehicle
         ~StationaryVehicle ();
 };

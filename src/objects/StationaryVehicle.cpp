@@ -14,6 +14,9 @@ StationaryVehicle::StationaryVehicle (const std::string& id, const Position& pos
          << endl;
 }
 
+//Function for world update (does nothing)
+void StationaryVehicle::update () { return; }
+
 //Destructor for the stationary vehicle
 StationaryVehicle::~StationaryVehicle () {
 

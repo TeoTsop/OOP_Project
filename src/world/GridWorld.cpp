@@ -15,7 +15,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     
     //Constructing and placing all the moving objects first
     //Constructing the moving cars first
-    for (size_t i=0; i<this->numOfMovingCars; i++) {
+    for (int i=0; i<this->numOfMovingCars; i++) {
         //Generate random position for the moving vehicle
         Position randomCarPosition = Utils::randomPosition(width, height);
         //Generate a random direction for the moving vehicle to head towards
@@ -29,7 +29,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     }
 
     //Constructing the moving bikes likewise
-    for (size_t i=0; i<this->numOfMovingBikes; i++) {
+    for (int i=0; i<this->numOfMovingBikes; i++) {
         //Generate random position for the moving vehicle
         Position randomBikePosition = Utils::randomPosition(width, height);
         //Generate a random direction for the moving vehicle to head towards
@@ -44,7 +44,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
 
     //Constructing and placing all the stationary objects next
     //Constructing the stationary cars first
-    for (size_t i=0; i<this->numOfStoppedCars; i++) {
+    for (int i=0; i<this->numOfStoppedCars; i++) {
         //Generate random position for the stationary vehicle
         Position randomCarPosition = Utils::randomPosition(width, height);
         GridWorld::addObject(make_unique<StationaryVehicle>("SCAR"+to_string(i),
@@ -52,7 +52,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     }
 
     //Constructing the stop signs likewise
-    for (size_t i=0; i<this->numOfStopSigns; i++) {
+    for (int i=0; i<this->numOfStopSigns; i++) {
         //Generate random position for the sign
         Position randomSignPosition = Utils::randomPosition(width, height);
         //Generate random type for the sign
@@ -63,7 +63,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     }
 
     //Constructing the traffic lights
-    for (size_t i=0; i<this->numOfTrafficLights; i++) {
+    for (int i=0; i<this->numOfTrafficLights; i++) {
         //Generate random position for the traffic light vehicle
         Position randomTrafficLightPosition = Utils::randomPosition(width, height);
         //Generate random starting color for the traffic light
