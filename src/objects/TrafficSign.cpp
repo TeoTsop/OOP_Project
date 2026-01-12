@@ -2,11 +2,22 @@
 #include <iostream>
 
 TrafficSign::TrafficSign(const std::string& id, const Position& position, TrafficSignType type): 
-StaticObject(id, chooseGlyph(), position, TRAFFIC_SIGN) {
+StaticObject(
+    id,
+    (type == STOP)        ? 'S' :
+    (type == SPEED_LIMIT) ? 'L' :
+    (type == TURN_LEFT)   ? '<' :
+    (type == TURN_RIGHT)  ? '>' : '?',
+    position,
+    TRAFFIC_SIGN),
+    signType(type) {
    
     std::cout << "[+SIGN: " << id << "] Created at ("
               << position.getX() << ", " << position.getY()
-              << "\"\n";
+              << ") of type "
+              << (type ==  STOP? "STOP" :
+                  type == SPEED_LIMIT ? "SPEED_LIMIT" :
+                  type == TURN_LEFT ? "TURN_LEFT" : "TURN_RIGHT") << "\n";
 }
 
 TrafficSignType TrafficSign::getSignType() const {
@@ -14,32 +25,3 @@ TrafficSignType TrafficSign::getSignType() const {
 }
 
 
-char TrafficSign::chooseGlyph() const {
-    switch (signType) {
-        case STOP:
-            return 'S';
-        case SPEED_LIMIT:
-            return 'L';   // Limit
-        case TURN_LEFT:
-            return '<';
-        case TURN_RIGHT:
-            return '>';
-        default:
-            return '?';
-    }
-}
-
-void TrafficSign::setGlyph()  {
-    switch (signType) {
-        case STOP:
-            this->glyph= 'S';
-        case SPEED_LIMIT:
-            this->glyph= 'L';   // Limit
-        case TURN_LEFT:
-            this->glyph= '<';
-        case TURN_RIGHT:
-            this->glyph= '>';
-        default:
-            this->glyph= '?';
-    }
-}

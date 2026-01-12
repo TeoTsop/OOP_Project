@@ -21,11 +21,8 @@ public:
     // overrides update of base class StaticObject
     void update () override;
 
-    // override virtual getGlyph()
-    char chooseGlyph() const;
-
     // getters
-    TrafficLightColor getColor() const { return color; }
+    TrafficLightColor getColor() const;
 
 };
 

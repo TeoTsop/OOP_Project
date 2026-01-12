@@ -14,6 +14,4 @@ public:
                 TrafficSignType type);
 
     TrafficSignType getSignType() const;
-    char chooseGlyph() const;
-    void setGlyph();
 };
