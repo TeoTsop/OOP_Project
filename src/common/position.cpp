@@ -9,7 +9,7 @@ bool Position::operator==(const Position& other) const {
     return x == other.getX() && y==other.getY();
 }
 
-int Position::ManDist(const Position& other) {
+int Position::ManDist(const Position& other) const {
     return abs(x- other.x) + abs(y- other.y);
 }
 

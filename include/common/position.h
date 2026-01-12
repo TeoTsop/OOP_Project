@@ -17,7 +17,7 @@ public:
     bool operator==(const Position& other) const; 
     
     //Manhattan Distance
-    int ManDist(const Position& other);
+    int ManDist(const Position& other) const;
     
     //Getters
     int getX() const;
