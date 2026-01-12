@@ -22,10 +22,12 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
         Direction randomCarDirection = Utils::randomDirection();
         //Generate a random speed state (except STOPPED) for the moving vehicle to have
         SpeedState randomCarSpeed = Utils::randomSpeed();
-        GridWorld::addObject(make_unique<MovingCar>("MCAR"+to_string(i),
-                                                    randomCarPosition,
-                                                    randomCarSpeed,
-                                                    randomCarDirection));
+         auto car = make_unique<MovingCar>("MCAR" + to_string(i),
+                                         randomCarPosition,
+                                         randomCarSpeed,
+                                         randomCarDirection,
+                                         this);
+         GridWorld::addObject(move(car));
     }
 
     //Constructing the moving bikes likewise
@@ -36,10 +38,12 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
         Direction randomBikeDirection = Utils::randomDirection();
         //Generate a random speed state (except STOPPED) for the moving vehicle to have
         SpeedState randomBikeSpeed = Utils::randomSpeed();
-        GridWorld::addObject(make_unique<MovingBike>("MBIKE"+to_string(i),
-                                                     randomBikePosition,
-                                                     randomBikeSpeed,
-                                                     randomBikeDirection));
+        auto bike = make_unique<MovingBike>("MBIKE" + to_string(i),
+                                           randomBikePosition,
+                                           randomBikeSpeed,
+                                           randomBikeDirection,
+                                           this);
+        GridWorld::addObject(move(bike));
     }
 
     //Constructing and placing all the stationary objects next
@@ -47,8 +51,10 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     for (int i=0; i<this->numOfStoppedCars; i++) {
         //Generate random position for the stationary vehicle
         Position randomCarPosition = Utils::randomPosition(width, height);
-        GridWorld::addObject(make_unique<StationaryVehicle>("SCAR"+to_string(i),
-                                                            randomCarPosition));
+        auto car = make_unique<StationaryVehicle>("SCAR" + to_string(i),
+                                                 randomCarPosition,
+                                                 this);
+        GridWorld::addObject(move(car));
     }
 
     //Constructing the stop signs likewise
@@ -57,9 +63,11 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
         Position randomSignPosition = Utils::randomPosition(width, height);
         //Generate random type for the sign
         TrafficSignType randomSignType = Utils::randomTrafficSignType();
-        GridWorld::addObject(make_unique<TrafficSign>("SIGN"+to_string(i),
-                                                      randomSignPosition,
-                                                      randomSignType));
+        auto sign = make_unique<TrafficSign>("SIGN" + to_string(i),
+                                            randomSignPosition,
+                                            randomSignType,
+                                            this);
+        GridWorld::addObject(move(sign));
     }
 
     //Constructing the traffic lights
@@ -68,33 +76,45 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
         Position randomTrafficLightPosition = Utils::randomPosition(width, height);
         //Generate random starting color for the traffic light
         TrafficLightColor randomTrafficLightColor = Utils::randomTrafficLightColor();
-        GridWorld::addObject(make_unique<TrafficLight>("TLIG"+to_string(i),
-                                                       randomTrafficLightPosition,
-                                                       randomTrafficLightColor));
+        auto light = make_unique<TrafficLight>("TLIG" + to_string(i),
+                                              randomTrafficLightPosition,
+                                              randomTrafficLightColor,
+                                              this);
+        GridWorld::addObject(move(light));
     }
 
 }
 
 //Add Object
 void GridWorld::addObject(unique_ptr<WorldObject> obj) {
+    obj->setWorld(this);
     objects.push_back(move(obj));
 }
 
 //Update World
 void GridWorld::update() {
     ++currentTick;
-    for (size_t i = 0; i < objects.size(); ++i)
-    {
+    for (size_t i = 0; i < objects.size(); ++i) {
         WorldObject* obj = objects[i].get();
         // Object updates
         obj->update();
-        // If an object gets out of bounds it gets deleted
-        if (!isInBounds(obj->getPosition())) {
-            cout << "[-WORLD] Object " << obj->getId() << " moved out of bounds and will be removed." << endl;
-            removeObject(obj);
-            --i; // adjust index after erase
-        }
     }
+        // Clean up objects marked for removal
+    auto it = remove_if(objects.begin(), objects.end(),
+        [](const unique_ptr<WorldObject>& obj) {
+            // Check if object is out of bounds
+            GridWorld* world = obj->getWorld();
+            if (world && !world->isInBounds(obj->getPosition())) {
+                cout << "[-WORLD] Object " << obj->getId() 
+                     << " at (" << obj->getPosition().getX() 
+                     << "," << obj->getPosition().getY() 
+                     << ") moved out of bounds." << endl;
+                return true;
+            }
+            return false;
+        });
+    
+    objects.erase(it, objects.end());
 }
 
 // Remove Object
