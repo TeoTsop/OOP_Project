@@ -125,6 +125,27 @@ vector<WorldObject*> GridWorld::getObjectsAt(const Position& pos) const {
     return result;
 }
 
+//Function to visualise the grid
+void GridWorld::renderer () const {
+
+    //Create an empty grid
+    vector<vector<char>> grid(height, vector<char>(width, '.'));
+
+    //Fill the grid vector with all the objects
+    for (const auto& obj : objects) {
+        const Position& position = obj->getPosition();
+        if (isInBounds(position)) { grid[position.getX()][position.getY()] = obj->getGlyph(); }
+    }
+
+    //Print the visualisation of the grid
+    for (int y=0; y<height; y++) {
+        for (int x=0; x<width; x++) {
+            cout << grid[x][y] << ' ';
+        }
+        cout << '\n';
+    }
+}
+
 //Getters for the height width and current tick of the world
 int GridWorld::getWidth() const { return width; }
 int GridWorld::getHeight() const { return height; }

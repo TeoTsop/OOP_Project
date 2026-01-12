@@ -42,8 +42,11 @@ public:
     //Within bounds check
     bool isInBounds(const Position& pos) const;
 
-    //Επιστρέφει όλα τα αντικείμενα σε μία θέση
+    //Returns all the objects in a certain position
     vector<WorldObject*> getObjectsAt(const Position& pos) const;
+
+    //Visualisation function for the grid
+    void renderer () const;
 
     //Getters for the height width and current tick of the world
     int getWidth() const;
