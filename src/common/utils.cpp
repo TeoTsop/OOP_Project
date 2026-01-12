@@ -55,4 +55,14 @@ namespace Utils {
         }
     }
 
+    TrafficSignType randomTrafficSignType () {
+        int d = randomInteger(0,3);
+        switch (d) {
+            case 0: return TrafficSignType::STOP;
+            case 1: return TrafficSignType::SPEED_LIMIT;
+            case 2: return TrafficSignType::TURN_LEFT;
+            default: return TrafficSignType::TURN_RIGHT;
+        }
+    }
+
 }

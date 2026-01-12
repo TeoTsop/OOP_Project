@@ -1,14 +1,9 @@
-#include "../../include/world/GridWorld.h"
-#include "include/objects/MovingCar.h"
-#include "include/objects/MovingBike.h"
-#include "include/objects/StationaryVehicle.h"
-#include "include/objects/TrafficLight.h"
-#include "include/objects/TrafficSign.h"
-#include "include/common/utils.h"
-#include "include/common/enums.h"
+//Implementation of the functions inside the GridWorld class
+
 #include <algorithm>
-#include <string>
+#include <string> //In order to use the variable type string
 #include <iostream>
+#include "../../include/world/GridWorld.h" //The header file from where the functions below will be called
 
 using namespace std;
 
@@ -27,10 +22,10 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
         Direction randomCarDirection = Utils::randomDirection();
         //Generate a random speed state (except STOPPED) for the moving vehicle to have
         SpeedState randomCarSpeed = Utils::randomSpeed();
-        GridWorld::addObject(std::make_unique<MovingCar>("MCAR"+to_string(i),
-                                                         randomCarPosition,
-                                                         randomCarSpeed,
-                                                         randomCarDirection));
+        GridWorld::addObject(make_unique<MovingCar>("MCAR"+to_string(i),
+                                                    randomCarPosition,
+                                                    randomCarSpeed,
+                                                    randomCarDirection));
     }
 
     //Constructing the moving bikes likewise
@@ -41,10 +36,10 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
         Direction randomBikeDirection = Utils::randomDirection();
         //Generate a random speed state (except STOPPED) for the moving vehicle to have
         SpeedState randomBikeSpeed = Utils::randomSpeed();
-        GridWorld::addObject(std::make_unique<MovingCar>("MBIKE"+to_string(i),
-                                                         randomBikePosition,
-                                                         randomBikeSpeed,
-                                                         randomBikeDirection));
+        GridWorld::addObject(make_unique<MovingBike>("MBIKE"+to_string(i),
+                                                     randomBikePosition,
+                                                     randomBikeSpeed,
+                                                     randomBikeDirection));
     }
 
     //Constructing and placing all the stationary objects next
@@ -52,35 +47,40 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     for (size_t i=0; i<this->numOfStoppedCars; i++) {
         //Generate random position for the stationary vehicle
         Position randomCarPosition = Utils::randomPosition(width, height);
-        GridWorld::addObject(std::make_unique<MovingCar>("SCAR"+to_string(i),
-                                                         randomCarPosition));
+        GridWorld::addObject(make_unique<StationaryVehicle>("SCAR"+to_string(i),
+                                                            randomCarPosition));
     }
 
     //Constructing the stop signs likewise
     for (size_t i=0; i<this->numOfStopSigns; i++) {
-        //Generate random position for the stop sign
-        Position randomStopSignPosition = Utils::randomPosition(width, height);
-        GridWorld::addObject(std::make_unique<MovingCar>("STSI"+to_string(i),
-                                                         randomStopSignPosition));
+        //Generate random position for the sign
+        Position randomSignPosition = Utils::randomPosition(width, height);
+        //Generate random type for the sign
+        TrafficSignType randomSignType = Utils::randomTrafficSignType();
+        GridWorld::addObject(make_unique<TrafficSign>("SIGN"+to_string(i),
+                                                      randomSignPosition,
+                                                      randomSignType));
     }
 
     //Constructing the traffic lights
     for (size_t i=0; i<this->numOfTrafficLights; i++) {
-        TrafficLightColor randomTrafficLightColor = Utils::randomTrafficLightColor();
         //Generate random position for the traffic light vehicle
         Position randomTrafficLightPosition = Utils::randomPosition(width, height);
-        GridWorld::addObject(std::make_unique<MovingCar>("STSI"+to_string(i),
-                                                         randomTrafficLightPosition));
+        //Generate random starting color for the traffic light
+        TrafficLightColor randomTrafficLightColor = Utils::randomTrafficLightColor();
+        GridWorld::addObject(make_unique<TrafficLight>("TLIG"+to_string(i),
+                                                       randomTrafficLightPosition,
+                                                       randomTrafficLightColor));
     }
 
 }
 
-// Add Object
+//Add Object
 void GridWorld::addObject(unique_ptr<WorldObject> obj) {
     objects.push_back(move(obj));
 }
 
-// Update World
+//Update World
 void GridWorld::update() {
     ++currentTick;
     for (size_t i = 0; i < objects.size(); ++i)
@@ -125,7 +125,7 @@ vector<WorldObject*> GridWorld::getObjectsAt(const Position& pos) const {
     return result;
 }
 
-// Getters
+//Getters for the height width and current tick of the world
 int GridWorld::getWidth() const { return width; }
 int GridWorld::getHeight() const { return height; }
 int GridWorld::getCurrentTick() const { return currentTick; }

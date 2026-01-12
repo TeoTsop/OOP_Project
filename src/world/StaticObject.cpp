@@ -1,13 +1,15 @@
+//Implementation for the parent class of the stationary vehicles, traffic lights and signs
+
 #include "../../include/world/StaticObject.h"
 #include "../../include/world/GridWorld.h" 
 
 using namespace std;
 
-// Constructor
+//Constructor for a static object
 StaticObject::StaticObject(const string& id, char glyph, const Position& pos, const ObjectType& ObjectType)
     : WorldObject(id, glyph, pos, ObjectType) {
+//Empty
 }
 
-// Update (Only traffic lights update, the rest remain in their position forever)
-void StaticObject::update() {
-}
+//Destructor a static object
+StaticObject::~StaticObject () {}

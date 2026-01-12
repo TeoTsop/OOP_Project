@@ -22,4 +22,6 @@ namespace Utils {
     //Function to get random traffic light color
     TrafficLightColor randomTrafficLightColor ();
 
+    //Function to get a random treffic sign type
+    TrafficSignType randomTrafficSignType ();
 }

@@ -1,12 +1,8 @@
-//Executable file for the functions inside the moving car header file
+//Implementation for the functions inside the moving car class
 
 #include <iostream>
 #include <string> //In order to be able to use the string variable type
-#include "include/world/GridWorld.h" //In order to create an instance of the world and delete the vehicle if it gets out of bounds
-#include "include/objects/MovingCar.h" //The header file from where the functions below will be called
-#include "include/common/enums.h" //In order to use the enums ObjectType, Direction, SpeedState
-#include "include/common/utils.h" //In order to use the randomizers for the change of speed and direction part
-#include "include/common/position.h" //In order to be able to update the position of the moving vehicle
+#include "../../include/objects/MovingCar.h" //The header file from where the functions below will be called
 
 using namespace std;
 
@@ -18,12 +14,17 @@ MovingCar::MovingCar (const string& id, const Position& position,
                       SpeedState speedState, Direction direction)
     : MovingObject(id, 'C', position, ObjectType::MOVING_CAR, speedState, direction) {
 
+    cout << "[+MOVING: " << id << "] Starting at ("
+         << position.getX() << ", " << position.getY() << ") with "
+         << speedState << " and towards the " << direction << endl;
+
 }
 
+//Update the state of the object
 void MovingCar::update () {
 
     //Move the object according to the speed and direction it is heading towards
-    if (this->getSpeedState() == SpeedState::FULL_SPEED) {
+    if (this->getSpeedState() == SpeedState::FULL_SPEED) { //Case where the vehicle is moving at full speed
         switch (this->getDirection()) {
             case Direction::NORTH: this->position.setY(this->position.getY() + 2); break;
             case Direction::SOUTH: this->position.setY(this->position.getY() - 2); break;
@@ -31,7 +32,7 @@ void MovingCar::update () {
             default: this->position.setX(this->position.getX() - 2); break;
         }
     }
-    else {
+    else { //Case where the vehicle is moving at normal speed
         switch (this->getDirection()) {
             case Direction::NORTH: this->position.setY(this->position.getY() + 1); break;
             case Direction::SOUTH: this->position.setY(this->position.getY() - 1); break;
@@ -45,13 +46,14 @@ void MovingCar::update () {
     //Chance for the car to change its speed (3/10) and direction (5/10) just to spice things up a bit
     //The vehicle is not an intelligent one it is just affected by fate!
     int randValueForSpeed = Utils::randomInteger(1,10);
-    if (randValueForSpeed > 7) { 
+    if (randValueForSpeed > 7) { //If there is a successful number pull then choose the other speed than the current one
         if (this->speedState == SpeedState::FULL_SPEED) {this->speedState = SpeedState::HALF_SPEED;}
         else {this->speedState = SpeedState::FULL_SPEED;}
     }
     int randValueForDirection = Utils::randomInteger(1,10);
-    if (randValueForSpeed > 5) { 
-        while (1) {
+    if (randValueForSpeed > 5) {
+        while (1) { //If there is a successful number pull then iterate getting random directions till one is
+                    //found different than the current one
             Direction randomNewDirection = Utils::randomDirection();
             if (randomNewDirection == this->direction) {continue;}
             else {this->direction = randomNewDirection; break;}
@@ -59,4 +61,9 @@ void MovingCar::update () {
     }
 }
 
-MovingCar::~MovingCar () {}
+//Destructor for the moving car
+MovingCar::~MovingCar () {
+
+    cout << "[-MOVING: " << id << "]" << endl;
+
+}

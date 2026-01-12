@@ -1,12 +1,21 @@
-//Dimensions, objects, bounds
+//Header file for the grid
 
 #pragma once
 
-#include <vector>
-#include <memory>
-#include <string>
-#include "WorldObject.h"  // Base class for all objects
-#include "../common/position.h"
+#include <vector> //In order to use a vector to store the objects on the grid
+#include <memory> //In order to use the unique_ptr
+#include <string> //In order to use the variable type string
+#include "../common/utils.h"
+#include "../common/enums.h"
+//Included in order to generate all the objects inside the grid by calling their constructors
+//and destroying them afterwards
+#include "../objects/MovingCar.h"
+#include "../objects/MovingBike.h"
+#include "../objects/StationaryVehicle.h"
+#include "../objects/TrafficLight.h"
+#include "../objects/TrafficSign.h"
+#include "WorldObject.h" //Base class for all objects
+
 
 class GridWorld {
 private:
@@ -21,23 +30,24 @@ public:
     //Constructor of the grid world
     GridWorld(int width, int height, int nOMC, int nOMB, int nOTL, int nOSS, int nOSC);
 
-    // Adds objects 
+    //Adds objects to the grid
     void addObject(unique_ptr<WorldObject> obj);
 
-    // When clock ticks all objects get updated
+    //When clock ticks all objects get updated
     void update();
 
-    // Removes objects (for example if it got out of bounds)
+    //Removes objects (for example if it got out of bounds)
     void removeObject(WorldObject* obj);
 
-    // Within bounds check
+    //Within bounds check
     bool isInBounds(const Position& pos) const;
 
-    // Επιστρέφει όλα τα αντικείμενα σε μία θέση
+    //Επιστρέφει όλα τα αντικείμενα σε μία θέση
     vector<WorldObject*> getObjectsAt(const Position& pos) const;
 
-    // Getters
+    //Getters for the height width and current tick of the world
     int getWidth() const;
     int getHeight() const;
     int getCurrentTick() const;
+
 };

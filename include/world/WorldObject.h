@@ -1,9 +1,11 @@
-//Base abstract class (WorldObject)
+//Base abstract class
 
 #pragma once
-#include <string>
-#include "../common/position.h"
-#include "../common/enums.h"
+
+#include <string> //In order to be able to use the string variable type
+#include "../common/position.h" //In order to be able to track the position of the moving vehicle
+#include "../common/enums.h" //In order to use the enum ObjectType
+#include "GridWorld.h" //In order to access an instance of the grid
 
 using namespace std;
 

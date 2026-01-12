@@ -1,10 +1,22 @@
-#include "../../include/objects/StationaryVehicle.h"
-#include <iostream>
+//Implementation for the functions inside the stationary vehicle class
 
-StationaryVehicle::StationaryVehicle(const std::string& id, const Position& position)
-    : StaticObject(id, 'P', position, ObjectType::STOPPED_CAR)   // 'P' (Parked car)
-{
-    std::cout << "[+PARKED: " << id << "] Parked at ("
-              << position.getX() << ", " << position.getY() << ")\n";
+#include <iostream>
+#include "../../include/objects/StationaryVehicle.h" //The header file from where the functions below will be called
+
+using namespace std;
+
+//Constructor for the stationary vehicle
+StationaryVehicle::StationaryVehicle (const std::string& id, const Position& position)
+    : StaticObject(id, 'P', position, ObjectType::STOPPED_CAR) {
+    
+    cout << "[+PARKED: " << id << "] Parked at ("
+         << position.getX() << ", " << position.getY() << ")" 
+         << endl;
 }
 
+//Destructor for the stationary vehicle
+StationaryVehicle::~StationaryVehicle () {
+
+    cout << "[-PARKED: " << id << "]" << endl;
+
+}

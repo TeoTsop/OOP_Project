@@ -1,30 +1,21 @@
-//Executable file for the parent class of the movng cars and bikes
+//Implementation for the parent class of the movng cars and bikes
 
-#include <iostream>
 #include <string> //In order to be able to use the string variable type
-#include "include/world/MovingObject.h" //The header file from where the functions below will be called
-#include "include/common/enums.h" //In order to use the enums ObjectType, Direction, SpeedState
+#include "../../include/world/MovingObject.h" //The header file from where the functions below will be called
 
 using namespace std;
 
-//Forward declaration
-class GridWorld;
-
 //Constrctor for a moving object
 MovingObject::MovingObject (const string& id, char glyph, const Position& position,
-                            const ObjectType& objectType, SpeedState speedState,
-                            Direction direction)
+                            const ObjectType& objectType, const SpeedState& speedState,
+                            const Direction& direction)
     : WorldObject(id, glyph, position, objectType), speedState(speedState), direction(direction) {
-
-//Empty for now
+//Empty
 }
 
 //Getter functions for the speed and direction of the moving vehicle
-SpeedState MovingObject::getSpeedState () { return speedState; }
-Direction MovingObject::getDirection () { return direction; }
+SpeedState MovingObject::getSpeedState () const { return speedState; }
+Direction MovingObject::getDirection () const { return direction; }
 
-//Destructor a the moving object
-MovingObject::~MovingObject () {
-
-//Empty for now
-}
+//Destructor a moving object
+MovingObject::~MovingObject () {}

@@ -1,8 +1,8 @@
+//Implementation of the functions in the base abstract class
+
 #include <iostream>
-#include <string>
-#include "include/world/GridWorld.h"
-#include "../../include/world/WorldObject.h"
-#include "include/common/enums.h"
+#include <string> //In order to be able to use the string variable type
+#include "../../include/world/WorldObject.h" //The header file from where the functions below will be called
 
 using namespace std;
 
@@ -13,7 +13,7 @@ GridWorld world;
 WorldObject::WorldObject(const string& id, char glyph, const Position& pos,
                          const ObjectType& objectType)
     : id(id), glyph(glyph), position(pos), objectType(objectType) {
-    // Empty for now
+//Empty
 }
 
 //Getters for the id, glyph, position and type of the world object
@@ -30,6 +30,4 @@ void WorldObject::setPosition (int x, int y) {
 }
 
 //Destructor for the world object
-WorldObject::~WorldObject() {
-    // Empty for now
-}
+WorldObject::~WorldObject() {}
