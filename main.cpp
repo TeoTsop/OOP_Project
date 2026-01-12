@@ -1,10 +1,11 @@
 #include <iostream>
 #include <string>
+#include <cstring>  //For strcmp
 #include <vector>
 #include <ctime>    //For the seed number
 
-#include "common\position.h"
-#include "world\GridWorld.h"
+#include "..\include\common\position.h"
+#include "..\include\world\GridWorld.h"
 using namespace std;
 
 //Helper Function
@@ -30,7 +31,7 @@ void printHelp () {
 //Function to check if a string is actually a number
 bool numberCheck (string s) {
 
-    for (int i=0; i<s.size(); i++) {
+    for (size_t i=0; i<s.size(); i++) {
         if (isdigit(s[i]) == false) {
             return false;
         }
@@ -44,7 +45,7 @@ bool checkArgumentValidity (int argumentPosition, char* arguments[]) {
 
     //Check if the argument following the codename is a number
     string s = arguments[argumentPosition+1]; //The argument after the codename
-    if (numberCheck == false) {               //If said arument is not a number
+    if (numberCheck(s) == false) {            //If said arument is not a number
         cout << "The arguments are structured wrongly!" << endl;
         return false;
     }
@@ -75,38 +76,36 @@ int main (int argc, char* argv[]) {
     int simulationTicks = 100;
     int minConfidenceThreshold = 40;
 
-
-
     int i = 1; //Ommiting the first argument which is "./"
     while (i<argc) { //Checking for the special codes that can alter the default settings of the simulation
 
         //Check to ensure current argument's structural validity
-        if (checkArgumentValidity(i, argv) == false && argv[i] != "--gps" && argv[i] != "--help") {return -1;}
+        if (checkArgumentValidity(i, argv) == false && strcmp(argv[i], "--gps") == 1 && strcmp(argv[i], "--help") == 1) {return -1;}
 
         //Seed number codename
-        if (argv[i] == "--seed") { seedNumber = stoi(argv[i+1]); }
+        if (strcmp(argv[i], "--seed") == 0) { seedNumber = stoi(argv[i+1]); }
         //Grid's horrizontal dimention codename
-        else if (argv[i] == "--dimX") { dimX = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--dimX") == 0) { dimX = stoi(argv[i+1]); }
         //Grid's latteral dimention codename
-        else if (argv[i] == "--dimY") { dimY = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--dimY") == 0) { dimY = stoi(argv[i+1]); }
         //Number of moving cars in the grid codename
-        else if (argv[i] == "--numMovingCars") { numMovingCars = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--numMovingCars") == 0) { numMovingCars = stoi(argv[i+1]); }
         //Number of moving bikes in the grid codename
-        else if (argv[i] == "--numMovingBikes") { numMovingBikes = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--numMovingBikes") == 0) { numMovingBikes = stoi(argv[i+1]); }
         //Number of parked cars in the grid codename
-        else if (argv[i] == "--numParkedCars") { numParkedCars = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--numParkedCars") == 0) { numParkedCars = stoi(argv[i+1]); }
         //Number of parked bikes in the grid codename
-        else if (argv[i] == "--numStopSigns") { numStopSigns = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--numStopSigns") == 0) { numStopSigns = stoi(argv[i+1]); }
         //Number of traffic lights in the grid codename
-        else if (argv[i] == "--numTrafficLights") { numTrafficLights = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--numTrafficLights") == 0) { numTrafficLights = stoi(argv[i+1]); }
         //Number of ticks the simulation will last
-        else if (argv[i] == "--simulationTicks") { simulationTicks = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--simulationTicks") == 0) { simulationTicks = stoi(argv[i+1]); }
         //Min confidence threshold codename
-        else if (argv[i] == "--minConfidenceThreshold") { minConfidenceThreshold = stoi(argv[i+1]); }
+        else if (strcmp(argv[i], "--minConfidenceThreshold") == 0) { minConfidenceThreshold = stoi(argv[i+1]); }
         //Target coordinates of sentient vehicle
-        else if (argv[i] == "--gps") { break; }
+        else if (strcmp(argv[i], "--gps") == 0) { break; }
         //Function to call the help menu
-        else if (argv[i] == "--help") {
+        else if (strcmp(argv[i], "--help") == 0) {
             printHelp();
             return 0;
         }
@@ -133,11 +132,9 @@ int main (int argc, char* argv[]) {
     }
 
 
-    //NOTE TO FUTURE SELF AND KOSTAS
-    //
-    //HERE ADD THE CALLS OF THE SIMULATION
-    //
-    //IT WONT WORK OTHERWISE
+    GridWorld* grid = new GridWorld(dimX, dimY, numMovingCars, numMovingBikes, numTrafficLights,
+                                    numStopSigns, numParkedCars);
+    while (grid->getCurrentTick() < simulationTicks) { grid->update(); grid->renderer(); }
  
 
 }
