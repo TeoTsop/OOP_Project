@@ -90,7 +90,7 @@ int main (int argc, char* argv[]) {
     cout << "|===== Starting Simulation Initialization =====|\n" << endl;
 
     //Parameters to be set before commencing the simulation
-//    int seedNumber = static_cast<int>(time(NULL));;
+    unsigned int seedNumber = static_cast<int>(time(NULL));;
     int dimX = 40, dimY = 40;
     int numMovingCars = 3;
     int numMovingBikes = 4;
@@ -163,10 +163,10 @@ int main (int argc, char* argv[]) {
             int value = stoi(argv[i+1]);
 
             //Seed number codename
-//            if (currArg == "--seed") { seedNumber = value; }
+            if (currArg == "--seed") { seedNumber = value; }
 
             //Grid's horrizontal dimention codename
-            /*else*/ if (currArg == "--dimX") { dimX = value; }
+            else if (currArg == "--dimX") { dimX = value; }
 
             //Grid's latteral dimention codename
             else if (currArg == "--dimY") { dimY = value; }
@@ -209,6 +209,17 @@ int main (int argc, char* argv[]) {
     }
 
     //Check for negative values
+    if (seedNumber <= 0) {
+        cout << "ERROR: Seed cannot be below or equal to zero!" << endl;
+        return -1;
+    }
+    constexpr unsigned int unsignedIntegerMaxValue = 4294967295u;
+    if (seedNumber > unsignedIntegerMaxValue) {
+        cout << "ERROR: Seed number way too large. Why are you spamming numbers? Maximum is "
+             << unsignedIntegerMaxValue << ", otherwise there will be issues in the object generation!"
+             << endl;
+        return -1;
+    }
     if (dimX <= 0 || dimY <= 0) {
         cout << "ERROR: Grid dimentions must not be negative numbers!" << endl;
         return -1;
@@ -224,6 +235,7 @@ int main (int argc, char* argv[]) {
     }
 
     cout << "\n|=====Simulation Parameters Summary=====|" << endl;
+    cout << "Seed: " << seedNumber << endl;
     cout << "Grid dimentions:\n\tx: " << dimX << "\n\ty: " << dimY << endl;
     cout << "Moving cars: " << numMovingCars << endl;
     cout << "Moving bikes: " << numMovingBikes << endl;
@@ -237,11 +249,11 @@ int main (int argc, char* argv[]) {
     cout << "|=====Creating Grid=====|" << endl;
 
     //Create grid
-    GridWorld* grid = new GridWorld(dimX, dimY, numMovingCars, numMovingBikes, numTrafficLights,
-                                    numStopSigns, numParkedCars);
+    GridWorld* grid = new GridWorld(seedNumber, dimX, dimY, simulationTicks, numMovingCars, numMovingBikes, 
+                                    numTrafficLights, numStopSigns, numParkedCars);
     //Run simulation
     while (grid->getCurrentTick() < simulationTicks) { 
-        cout << "\n--- Tick: " << grid->getCurrentTick()+1 << " ---" << endl;
+        cout << "\n|=============== Tick: " << grid->getCurrentTick()+1 << " ===============|" << endl;
         grid->update();
         grid->renderer(); 
     }
@@ -253,7 +265,7 @@ int main (int argc, char* argv[]) {
     delete grid;
 
 
-    cout << "\nSimulation Completed Succseefully!" << endl;
+    cout << "\nSimulation Completed Succseefully!\n" << endl;
 
     return 0;
 }

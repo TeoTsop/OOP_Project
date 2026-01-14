@@ -10,8 +10,8 @@ using namespace std;
 //Constrctor for a moving bike
 MovingBike::MovingBike (const string& id, const Position& position,
                         SpeedState speedState, Direction direction,
-                        GridWorld* world)
-    : MovingObject(id, 'B', position, ObjectType::MOVING_BIKE, speedState, direction, world) {
+                        GridWorld* world, RandomGenerators& rng)
+    : MovingObject(id, 'B', position, ObjectType::MOVING_BIKE, speedState, direction, world), rng(rng){
 
     cout << "[+MOVING: " << id << "] Starting at ("
          << position.getX() << ", " << position.getY() << ") with "
@@ -48,16 +48,16 @@ void MovingBike::update () {
 
     //Chance for the bike to change its speed (3/10) and direction (5/10) just to spice things up a bit
     //The vehicle is not an intelligent one it is just affected by fate!
-    int randValueForSpeed = Utils::randomInteger(1,10);
+    int randValueForSpeed = rng.randomInteger(1,10);
     if (randValueForSpeed > 7) { //If there is a successful number pull then choose the other speed than the current one
         if (this->speedState == SpeedState::FULL_SPEED) {this->speedState = SpeedState::HALF_SPEED;}
         else {this->speedState = SpeedState::FULL_SPEED;}
     }
-    int randValueForDirection = Utils::randomInteger(1,10);
+    int randValueForDirection = rng.randomInteger(1,10);
     if (randValueForDirection > 5) { 
         while (1) { //If there is a successful number pull then iterate getting random directions till one is
                     //found different than the current one
-            Direction randomNewDirection = Utils::randomDirection();
+            Direction randomNewDirection = rng.randomDirection();
             if (randomNewDirection == this->direction) {continue;}
             else {this->direction = randomNewDirection; break;}
         }

@@ -9,11 +9,13 @@
 
 //The class for the moving car
 class MovingCar : public MovingObject {
+    private:
+        RandomGenerators& rng;  //Reference for rng
     public:
         //Constructor for the moving car
         MovingCar (const std::string& id, const Position& position,
                    SpeedState speedState, Direction direction,
-                   GridWorld* world);
+                   GridWorld* world, RandomGenerators& rng);
 
         //Function to update the position, direction and speed of the car
         //Overrides the function in the base class Moving Object

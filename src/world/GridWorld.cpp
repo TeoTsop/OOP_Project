@@ -9,40 +9,41 @@ using namespace std;
 
 //Constructor for the grid world
 //Call the construction of all the objects in the grid
-GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int nOSC)
-                    : width(w), height(h), currentTick(0), numOfMovingCars(nOMC), numOfMovingBikes(nOMB),
-                      numOfTrafficLights(nOTL), numOfStopSigns(nOSS), numOfStoppedCars(nOSC) {
+GridWorld::GridWorld(unsigned int seed, int w, int h, int numTics, int nOMC, int nOMB, int nOTL, int nOSS, int nOSC)
+                    : seed(seed), width(w), height(h), currentTick(0), numberOfTics(numTics),
+                      numOfMovingCars(nOMC), numOfMovingBikes(nOMB), numOfTrafficLights(nOTL),
+                      numOfStopSigns(nOSS), numOfStoppedCars(nOSC), rng(seed) {
     
     //Constructing and placing all the moving objects first
     //Constructing the moving cars first
     for (int i=0; i<this->numOfMovingCars; i++) {
         //Generate random position for the moving vehicle
-        Position randomCarPosition = Utils::randomPosition(width, height);
+        Position randomCarPosition = rng.randomPosition(width, height);
         //Generate a random direction for the moving vehicle to head towards
-        Direction randomCarDirection = Utils::randomDirection();
+        Direction randomCarDirection = rng.randomDirection();
         //Generate a random speed state (except STOPPED) for the moving vehicle to have
-        SpeedState randomCarSpeed = Utils::randomSpeed();
+        SpeedState randomCarSpeed = rng.randomSpeed();
          auto car = make_unique<MovingCar>("MCAR" + to_string(i),
                                          randomCarPosition,
                                          randomCarSpeed,
                                          randomCarDirection,
-                                         this);
+                                         this, rng);
          addObject(move(car));
     }
 
     //Constructing the moving bikes likewise
     for (int i=0; i<this->numOfMovingBikes; i++) {
         //Generate random position for the moving vehicle
-        Position randomBikePosition = Utils::randomPosition(width, height);
+        Position randomBikePosition = rng.randomPosition(width, height);
         //Generate a random direction for the moving vehicle to head towards
-        Direction randomBikeDirection = Utils::randomDirection();
+        Direction randomBikeDirection = rng.randomDirection();
         //Generate a random speed state (except STOPPED) for the moving vehicle to have
-        SpeedState randomBikeSpeed = Utils::randomSpeed();
+        SpeedState randomBikeSpeed = rng.randomSpeed();
         auto bike = make_unique<MovingBike>("MBIKE" + to_string(i),
                                            randomBikePosition,
                                            randomBikeSpeed,
                                            randomBikeDirection,
-                                           this);
+                                           this, rng);
         addObject(move(bike));
     }
 
@@ -50,7 +51,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     //Constructing the stationary cars first
     for (int i=0; i<this->numOfStoppedCars; i++) {
         //Generate random position for the stationary vehicle
-        Position randomCarPosition = Utils::randomPosition(width, height);
+        Position randomCarPosition = rng.randomPosition(width, height);
         auto car = make_unique<StationaryVehicle>("SCAR" + to_string(i),
                                                  randomCarPosition,
                                                  this);
@@ -60,9 +61,9 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     //Constructing the stop signs likewise
     for (int i=0; i<this->numOfStopSigns; i++) {
         //Generate random position for the sign
-        Position randomSignPosition = Utils::randomPosition(width, height);
+        Position randomSignPosition = rng.randomPosition(width, height);
         //Generate random type for the sign
-        TrafficSignType randomSignType = Utils::randomTrafficSignType();
+        TrafficSignType randomSignType = rng.randomTrafficSignType();
         auto sign = make_unique<TrafficSign>("SIGN" + to_string(i),
                                             randomSignPosition,
                                             randomSignType,
@@ -73,9 +74,9 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
     //Constructing the traffic lights
     for (int i=0; i<this->numOfTrafficLights; i++) {
         //Generate random position for the traffic light vehicle
-        Position randomTrafficLightPosition = Utils::randomPosition(width, height);
+        Position randomTrafficLightPosition = rng.randomPosition(width, height);
         //Generate random starting color for the traffic light
-        TrafficLightColor randomTrafficLightColor = Utils::randomTrafficLightColor();
+        TrafficLightColor randomTrafficLightColor = rng.randomTrafficLightColor();
         auto light = make_unique<TrafficLight>("TLIG" + to_string(i),
                                               randomTrafficLightPosition,
                                               randomTrafficLightColor,
@@ -148,21 +149,28 @@ vector<WorldObject*> GridWorld::getObjectsAt(const Position& pos) const {
 //Function to visualise the grid
 void GridWorld::renderer () const {
 
-    //Create an empty grid
-    vector<vector<char>> grid(height, vector<char>(width, '.'));
+    //Visualization Full
+    if (currentTick == 1 || currentTick == numberOfTics) {
+        //Create an empty grid
+        vector<vector<char>> grid(height, vector<char>(width, '.'));
 
-    //Fill the grid vector with all the objects
-    for (const auto& obj : objects) {
-        const Position& position = obj->getPosition();
-        if (isInBounds(position)) { grid[position.getX()][position.getY()] = obj->getGlyph(); }
-    }
-
-    //Print the visualisation of the grid
-    for (int y=0; y<height; y++) {
-        for (int x=0; x<width; x++) {
-            cout << grid[x][y] << ' ';
+        //Fill the grid vector with all the objects
+        for (const auto& obj : objects) {
+            const Position& position = obj->getPosition();
+            if (isInBounds(position)) { grid[position.getX()][position.getY()] = obj->getGlyph(); }
         }
-        cout << '\n';
+
+        //Print the visualisation of the grid
+        for (int y=0; y<height; y++) {
+            for (int x=0; x<width; x++) {
+                cout << grid[x][y] << ' ';
+            }
+            cout << '\n';
+        }
+    }
+    //Visualization POV
+    else {
+        return; //Need sensors to do
     }
 }
 
@@ -170,3 +178,5 @@ void GridWorld::renderer () const {
 int GridWorld::getWidth() const { return width; }
 int GridWorld::getHeight() const { return height; }
 int GridWorld::getCurrentTick() const { return currentTick; }
+unsigned int GridWorld::getSeed() const { return seed; }
+const RandomGenerators& GridWorld::getRandomGenerator() const { return rng; }

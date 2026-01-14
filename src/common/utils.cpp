@@ -1,68 +1,78 @@
-//
+//File where the functions in the utils header file are described
 
-#include "../../include/common/utils.h"
+#include <iostream>
+#include "../../include/common/utils.h" //Include the header file from where the functions below will be called
 
-#include <random>
-#include <ctime>
+using namespace std;
 
-namespace {
-    //Internal random engine
-    std::mt19937 rng;
+RandomGenerators::RandomGenerators (unsigned int newSeed) :
+    seed(newSeed) {
+    
+    intializeWithSeed(newSeed);
 }
 
-namespace Utils {
+//Initialize randomizer with current seed
+void RandomGenerators::intializeWithSeed (unsigned int newSeed) {
 
-    //Function to get a random integer
-    int randomInteger (int min, int max) {
-        std::uniform_int_distribution<int> dist(min, max);
-        return dist(rng);
+    if (initialized) {
+        cout << "[WARNING] Random generator already initialized! Current seed is: " << seed
+             << ", ignoring new seed!" << endl;
     }
 
-    //Function to get a random position inside the grid
-    Position randomPosition (int width, int height) {
-        int x = randomInteger(0, width-1);
-        int y = randomInteger(0, height-1);
-        return Position(x, y);
-    }
+    //Creating the random generator based on the seed given
+    generator = make_unique<std::mt19937>(newSeed);
+    seed = newSeed;
+    initialized = true;
+}
 
-    //Function to get a random direction
-    Direction randomDirection () {
-        int d = randomInteger(0, 3);
-        switch (d) {
-            case 0: return Direction::NORTH;
-            case 1: return Direction::SOUTH;
-            case 2: return Direction::EAST;
-            default: return Direction::WEST;
-        }
-    }
+//Function to get a random integer
+int RandomGenerators::randomInteger (int min, int max) {
 
-    //Function to get a random speed
-    SpeedState randomSpeed () {
-        int d = randomInteger(0, 1);
-        switch (d) {
-            case 0: return SpeedState::HALF_SPEED;
-            default: return SpeedState::FULL_SPEED;
-        }
-    }
+    checkInitialized();
 
-    //Function to get random traffic light color
-    TrafficLightColor randomTrafficLightColor () {
-        int d = randomInteger(0, 2);
-        switch (d) {
-            case 0: return TrafficLightColor::RED;
-            case 1: return TrafficLightColor::YELLOW;
-            default: return TrafficLightColor::GREEN;
-        }
-    }
+    uniform_int_distribution<> dist(min, max);
+    return dist(*generator);
+}
 
-    TrafficSignType randomTrafficSignType () {
-        int d = randomInteger(0,3);
-        switch (d) {
-            case 0: return TrafficSignType::STOP;
-            case 1: return TrafficSignType::SPEED_LIMIT;
-            case 2: return TrafficSignType::TURN_LEFT;
-            default: return TrafficSignType::TURN_RIGHT;
-        }
-    }
+//Function to get a random double
+double RandomGenerators::randomDouble (double min, double max) {
 
+    checkInitialized();
+
+    uniform_int_distribution<> dist(min, max);
+    return dist(*generator);
+}
+
+//Function to get a random position inside the grid
+Position RandomGenerators::randomPosition (int width, int height) {
+
+    int x = randomInteger(0, width-1);
+    int y = randomInteger(0, height-1);
+
+    return Position(x,y);
+
+} 
+
+//Function to get a random direction
+Direction RandomGenerators::randomDirection () {
+    //South=0, North=1, East=2, West=3
+    return static_cast<Direction>(randomInteger(0,3));
+}
+
+//Function to get a random speed
+SpeedState RandomGenerators::randomSpeed () {
+    //Half Speed=1, Full Speed=2
+    return static_cast<SpeedState>(randomInteger(1,2));
+}
+
+//Function to get random traffic light color
+TrafficLightColor RandomGenerators::randomTrafficLightColor () {
+    //Red=0, Yellow=1, Green=2
+    return static_cast<TrafficLightColor>(randomInteger(0,3));
+}
+
+//Function to get a random treffic sign type
+TrafficSignType RandomGenerators::randomTrafficSignType () {
+    //Stor=0, Speed Limit=1, Turn Left=2, Turn Right=3
+    return static_cast<TrafficSignType>(randomInteger(0,3));
 }

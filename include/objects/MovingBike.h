@@ -9,11 +9,13 @@
 
 //The class for the moving bike
 class MovingBike : public MovingObject {
+    private:
+        RandomGenerators& rng;  //Reference for rng
     public:
         //Constructor for the moving bike
         MovingBike (const std::string& id, const Position& position,
                     SpeedState speedState, Direction direction,
-                    GridWorld* world);
+                    GridWorld* world, RandomGenerators& rng);
 
         //Function to update the position, direction and speed of the bike
         //Overrides the function in the base class Moving Object
