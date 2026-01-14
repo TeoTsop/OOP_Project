@@ -15,7 +15,11 @@ MovingBike::MovingBike (const string& id, const Position& position,
 
     cout << "[+MOVING: " << id << "] Starting at ("
          << position.getX() << ", " << position.getY() << ") with "
-         << speedState << " and towards the " << direction << endl;
+         << (speedState == FULL_SPEED ? "FULL SPEED" : "HALF_SPEED") 
+         << " and towards the " << (direction == NORTH ? "NORTH" :
+                                    direction == WEST ? "WEST" :
+                                    direction == EAST ? "EAST" :
+                                    "SOUTH") << endl;
 
 }
 
