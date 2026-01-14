@@ -12,7 +12,7 @@ class TrafficSign : public StaticObject {
 
     public:
         //Constructor for the traffic sign
-        TrafficSign(const std::string& id, const Position& position, TrafficSignType type);
+        TrafficSign(const std::string& id, const Position& position, TrafficSignType type, GridWorld* world);
 
         //Getter for the traffic sign type
         TrafficSignType getSignType() const;

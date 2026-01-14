@@ -2,14 +2,15 @@
 
 #include <string> //In order to be able to use the string variable type
 #include "../../include/world/MovingObject.h" //The header file from where the functions below will be called
+#include "../../include/world/GridWorld.h" //The header file of the simulation's world
 
 using namespace std;
 
 //Constrctor for a moving object
 MovingObject::MovingObject (const string& id, char glyph, const Position& position,
                             const ObjectType& objectType, const SpeedState& speedState,
-                            const Direction& direction)
-    : WorldObject(id, glyph, position, objectType), speedState(speedState), direction(direction) {
+                            const Direction& direction, GridWorld* world)
+    : WorldObject(id, glyph, position, objectType, world), speedState(speedState), direction(direction) {
 //Empty
 }
 

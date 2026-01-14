@@ -27,7 +27,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
                                          randomCarSpeed,
                                          randomCarDirection,
                                          this);
-         GridWorld::addObject(move(car));
+         addObject(move(car));
     }
 
     //Constructing the moving bikes likewise
@@ -43,7 +43,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
                                            randomBikeSpeed,
                                            randomBikeDirection,
                                            this);
-        GridWorld::addObject(move(bike));
+        addObject(move(bike));
     }
 
     //Constructing and placing all the stationary objects next
@@ -54,7 +54,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
         auto car = make_unique<StationaryVehicle>("SCAR" + to_string(i),
                                                  randomCarPosition,
                                                  this);
-        GridWorld::addObject(move(car));
+        addObject(move(car));
     }
 
     //Constructing the stop signs likewise
@@ -67,7 +67,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
                                             randomSignPosition,
                                             randomSignType,
                                             this);
-        GridWorld::addObject(move(sign));
+        addObject(move(sign));
     }
 
     //Constructing the traffic lights
@@ -80,7 +80,7 @@ GridWorld::GridWorld(int w, int h, int nOMC, int nOMB, int nOTL, int nOSS, int n
                                               randomTrafficLightPosition,
                                               randomTrafficLightColor,
                                               this);
-        GridWorld::addObject(move(light));
+        addObject(move(light));
     }
 
 }

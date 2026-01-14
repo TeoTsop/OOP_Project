@@ -8,6 +8,9 @@
 #include "../common/position.h" //In order to be able to track the position of the moving vehicle
 #include "WorldObject.h" //Included since WorldObject is the parent class for all object in the grid
 
+//Forward declaration
+class GridWorld;
+
 //Parent class for all moving objects
 //Child class of WorldObject class
 class MovingObject : public WorldObject {
@@ -18,7 +21,7 @@ class MovingObject : public WorldObject {
         //Constructor for a moving object
         MovingObject (const std::string& id, char glyph, const Position& position,
                       const ObjectType& objectType, const SpeedState& speedState,
-                      const Direction& direction);
+                      const Direction& direction, GridWorld* World);
         
         //Getters for the moving object's speed and direction
         SpeedState getSpeedState () const;

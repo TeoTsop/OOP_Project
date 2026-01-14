@@ -8,7 +8,7 @@
 class StationaryVehicle : public StaticObject {
     public:
         //Constructor for the stationary vehicle
-        StationaryVehicle(const std::string& id, const Position& position);
+        StationaryVehicle(const std::string& id, const Position& position, GridWorld* world);
 
         //Function for world update (does nothing)
         void update();

@@ -21,9 +21,9 @@ class GridWorld {
 private:
     int width;                                                  //The width of the world
     int height;                                                 //The height of the world
+    int currentTick;                                            //The current tick the world is in
     int numOfMovingCars, numOfMovingBikes;                      //The number of moving cars and bikes in the grid
     int numOfTrafficLights, numOfStopSigns, numOfStoppedCars;   //The number of traffic lights, stop signs and stopped cars in the grid
-    int currentTick;                                            //The current tick the world is in
     vector<unique_ptr<WorldObject>> objects;                    //The objects inside the world
 
 public:

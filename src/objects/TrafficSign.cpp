@@ -6,12 +6,12 @@
 using namespace std;
 
 //Constructor for the traffic sign
-TrafficSign::TrafficSign(const std::string& id, const Position& position, TrafficSignType type)
+TrafficSign::TrafficSign(const std::string& id, const Position& position, TrafficSignType type, GridWorld* world)
     : StaticObject( id,
                     (type == TrafficSignType::STOP)        ? 'S' :
                     (type == TrafficSignType::SPEED_LIMIT) ? 'L' :
                     (type == TrafficSignType::TURN_LEFT)   ? '<' :
-                    (type == TrafficSignType::TURN_RIGHT)  ? '>' : '?', position, ObjectType::TRAFFIC_SIGN),
+                    (type == TrafficSignType::TURN_RIGHT)  ? '>' : '?', position, ObjectType::TRAFFIC_SIGN, world),
                     signType(type) {
    
     cout << "[+SIGN: " << id << "] Created at ("
@@ -24,7 +24,7 @@ TrafficSign::TrafficSign(const std::string& id, const Position& position, Traffi
 }
 
 //Function for world update (does nothing)
-void update () { return; }
+void TrafficSign::update () { return; }
 
 //Getter for the type of the traffic sign
 TrafficSignType TrafficSign::getSignType() const { return signType; }

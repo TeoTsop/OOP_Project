@@ -19,7 +19,7 @@ class TrafficLight : public StaticObject {
 
     public:
         //Constructor for the traffic light
-        TrafficLight(const std::string& id, const Position& position, const TrafficLightColor& color);
+        TrafficLight(const std::string& id, const Position& position, const TrafficLightColor& color, GridWorld* world);
 
         //Function to update the color of the traffic light
         //Overrides the function in the base class Static Object

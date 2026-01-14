@@ -6,8 +6,8 @@
 using namespace std;
 
 //Constructor for the stationary vehicle
-StationaryVehicle::StationaryVehicle (const std::string& id, const Position& position)
-    : StaticObject(id, 'P', position, ObjectType::STOPPED_CAR) {
+StationaryVehicle::StationaryVehicle (const std::string& id, const Position& position, GridWorld* world)
+    : StaticObject(id, 'P', position, ObjectType::STOPPED_CAR, world) {
     
     cout << "[+PARKED: " << id << "] Parked at ("
          << position.getX() << ", " << position.getY() << ")" 

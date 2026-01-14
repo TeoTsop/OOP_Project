@@ -3,16 +3,15 @@
 #include <iostream>
 #include <string> //In order to be able to use the string variable type
 #include "../../include/objects/MovingBike.h" //The header file from where the functions below will be called
+#include "../../include/world/GridWorld.h" //The header file of the simulation's world
 
 using namespace std;
 
-//Instance of the GridWorld
-GridWorld world;
-
 //Constrctor for a moving bike
 MovingBike::MovingBike (const string& id, const Position& position,
-                        SpeedState speedState, Direction direction)
-    : MovingObject(id, 'B', position, ObjectType::MOVING_BIKE, speedState, direction) {
+                        SpeedState speedState, Direction direction,
+                        GridWorld* world)
+    : MovingObject(id, 'B', position, ObjectType::MOVING_BIKE, speedState, direction, world) {
 
     cout << "[+MOVING: " << id << "] Starting at ("
          << position.getX() << ", " << position.getY() << ") with "
@@ -41,7 +40,7 @@ void MovingBike::update () {
         }
     }
     //In case the moving vehicle gets out of bounds then remove it from the grid
-    if (!world.isInBounds(this->getPosition())) { world.removeObject(this); return; }
+    if (!this->world->isInBounds(this->getPosition())) { this->world->removeObject(this); return; }
 
     //Chance for the bike to change its speed (3/10) and direction (5/10) just to spice things up a bit
     //The vehicle is not an intelligent one it is just affected by fate!
@@ -51,7 +50,7 @@ void MovingBike::update () {
         else {this->speedState = SpeedState::FULL_SPEED;}
     }
     int randValueForDirection = Utils::randomInteger(1,10);
-    if (randValueForSpeed > 5) { 
+    if (randValueForDirection > 5) { 
         while (1) { //If there is a successful number pull then iterate getting random directions till one is
                     //found different than the current one
             Direction randomNewDirection = Utils::randomDirection();

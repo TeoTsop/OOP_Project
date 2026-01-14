@@ -6,12 +6,12 @@
 using namespace std;
 
 //Constructor for the traffic lights
-TrafficLight::TrafficLight(const std::string& id, const Position& position, const TrafficLightColor& startColor)
+TrafficLight::TrafficLight(const std::string& id, const Position& position, const TrafficLightColor& startColor, GridWorld* world)
     : StaticObject( id, 
                     (startColor == TrafficLightColor::RED)    ? 'R' :
                     (startColor == TrafficLightColor::YELLOW) ? 'Y' :
                     (startColor == TrafficLightColor::GREEN)  ? 'G' : '?',
-                    position, ObjectType::TRAFFIC_LIGHT), color(startColor), tickCount(0) {
+                    position, ObjectType::TRAFFIC_LIGHT, world), color(startColor), tickCount(0) {
 
     cout << "[+LIGHT: " << id << "] Initialized at ("
          << position.getX() << ", " << position.getY()

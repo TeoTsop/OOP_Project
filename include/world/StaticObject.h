@@ -11,7 +11,7 @@
 class StaticObject : public WorldObject {
 public:
     //Constructor for a static object
-    StaticObject(const std::string& id, char glyph, const Position& pos, const ObjectType& ObjectType);
+    StaticObject(const std::string& id, char glyph, const Position& pos, const ObjectType& ObjectType, GridWorld* world);
 
     //Virtual function to update a static object's state (only for the traffic lights)
     virtual void update () = 0;
