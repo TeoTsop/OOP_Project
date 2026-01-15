@@ -2,6 +2,7 @@
 
 #pragma once
 #include <cstdlib> // For abs (absolute value) function
+#include "../common/enums.h" //For Direction
 
 using namespace std;
 
@@ -18,7 +19,11 @@ public:
     
     //Manhattan Distance
     int ManDist(const Position& other) const;
-    
+    // Moves (step) steps at direction dir
+    Position moveInDirection(Direction dir, int step) const;
+    // Operator ('+')
+    Position operator+(const Position& other) const;
+
     //Getters
     int getX() const;
     int getY() const;

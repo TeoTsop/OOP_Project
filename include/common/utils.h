@@ -68,3 +68,11 @@ class RandomGenerators {
         //Function to reset the randomizer
         void reset ();
 };
+
+//Randomizer functions not using the seed (used for the sensor readings and certainty)
+namespace Randomizer {
+
+    //Function to get a random integer
+    int randomInteger (int min, int max);
+
+}

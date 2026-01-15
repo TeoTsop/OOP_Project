@@ -9,13 +9,19 @@
 class TrafficSign : public StaticObject {
     private:
         TrafficSignType signType;
-
+        std::string signText;
     public:
         //Constructor for the traffic sign
         TrafficSign(const std::string& id, const Position& position, TrafficSignType type, GridWorld* world);
 
         //Getter for the traffic sign type
         TrafficSignType getSignType() const;
+
+        // Getter for the sign text (for Camera sensor)
+        const string& getSignText() const;
+
+        //Setter to set the sign text
+        void setSignText (const string& text);
 
         //Function for world update (does nothing)
         void update ();

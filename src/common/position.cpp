@@ -1,3 +1,5 @@
+//Implementation of the functions in the position header file
+
 #include "../../include/common/position.h"
 
 using namespace std;
@@ -11,6 +13,16 @@ bool Position::operator==(const Position& other) const {
 
 int Position::ManDist(const Position& other) const {
     return abs(x- other.x) + abs(y- other.y);
+}
+
+Position Position::moveInDirection(Direction dir, int step) const {
+    switch(dir) {
+        case Direction::NORTH: return Position(x, y+step);
+        case Direction::SOUTH: return Position(x, y-step);
+        case Direction::EAST:  return Position(x+step, y);
+        case Direction::WEST:  return Position(x-step, y);
+        default:               return *this; //In case anything goes wrong
+    }
 }
 
 int Position::getX() const { return x; }

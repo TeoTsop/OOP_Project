@@ -12,7 +12,9 @@ TrafficSign::TrafficSign(const std::string& id, const Position& position, Traffi
                     (type == TrafficSignType::SPEED_LIMIT) ? 'L' :
                     (type == TrafficSignType::TURN_LEFT)   ? '<' :
                     (type == TrafficSignType::TURN_RIGHT)  ? '>' : '?', position, ObjectType::TRAFFIC_SIGN, world),
-                    signType(type) {
+                    signType(type), signText ((type == TrafficSignType::STOP) ? "STOP" :
+                                              (type == TrafficSignType::SPEED_LIMIT) ? "SREED_LIMIT" :
+                                              (type == TrafficSignType::TURN_LEFT ? "TURN_LEFT" : "TURN_RIGHT")) {
    
     cout << "[+SIGN: " << id << "] Created at ("
          << position.getX() << ", " << position.getY()
@@ -28,6 +30,12 @@ void TrafficSign::update () { return; }
 
 //Getter for the type of the traffic sign
 TrafficSignType TrafficSign::getSignType() const { return signType; }
+
+//Getter for the sign text (for Camera sensor)
+const string& TrafficSign::getSignText() const { return signText; }
+
+//Setter for the traffic sign text
+void TrafficSign:: setSignText (const string& text) { signText = text; }
 
 //Destructor for the traffic sign
 TrafficSign::~TrafficSign () {
