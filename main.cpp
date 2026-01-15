@@ -98,7 +98,7 @@ int main (int argc, char* argv[]) {
     int numStopSigns = 2;
     int numTrafficLights = 2;
     int simulationTicks = 100;
-//    int minConfidenceThreshold = 40;
+    int minConfidenceThreshold = 40;
     vector<Position*> targetPositions;
 
     //Check for help first
@@ -190,7 +190,7 @@ int main (int argc, char* argv[]) {
             else if (currArg == "--simulationTicks") { simulationTicks = value; }
 
             //Min confidence threshold codename
-//            else if (currArg == "--minConfidenceThreshold") { minConfidenceThreshold = value; }
+            else if (currArg == "--minConfidenceThreshold") { minConfidenceThreshold = value; }
 
             //Case of wrongly written codename
             else {
@@ -250,7 +250,8 @@ int main (int argc, char* argv[]) {
 
     //Create grid
     GridWorld* grid = new GridWorld(seedNumber, dimX, dimY, simulationTicks, numMovingCars, numMovingBikes, 
-                                    numTrafficLights, numStopSigns, numParkedCars);
+                                    numTrafficLights, numStopSigns, numParkedCars, minConfidenceThreshold,
+                                    targetPositions);
     //Run simulation
     while (grid->getCurrentTick() < simulationTicks) { 
         cout << "\n|=============== Tick: " << grid->getCurrentTick()+1 << " ===============|" << endl;

@@ -9,10 +9,12 @@ using namespace std;
 
 //Constructor for the grid world
 //Call the construction of all the objects in the grid
-GridWorld::GridWorld(unsigned int seed, int w, int h, int numTics, int nOMC, int nOMB, int nOTL, int nOSS, int nOSC)
+GridWorld::GridWorld(unsigned int seed, int w, int h, int numTics, int nOMC, int nOMB, int nOTL,
+                     int nOSS, int nOSC, int mCT, vector<Position*> targetPositions)
                     : seed(seed), width(w), height(h), currentTick(0), numberOfTics(numTics),
                       numOfMovingCars(nOMC), numOfMovingBikes(nOMB), numOfTrafficLights(nOTL),
-                      numOfStopSigns(nOSS), numOfStoppedCars(nOSC), rng(seed) {
+                      numOfStopSigns(nOSS), numOfStoppedCars(nOSC), minConfidenceThreshold(mCT),
+                      targetPositions(targetPositions), rng(seed) {
     
     //Constructing and placing all the moving objects first
     //Constructing the moving cars first
@@ -73,7 +75,7 @@ GridWorld::GridWorld(unsigned int seed, int w, int h, int numTics, int nOMC, int
 
     //Constructing the traffic lights
     for (int i=0; i<this->numOfTrafficLights; i++) {
-        //Generate random position for the traffic light vehicle
+        //Generate random position for the traffic light
         Position randomTrafficLightPosition = rng.randomPosition(width, height);
         //Generate random starting color for the traffic light
         TrafficLightColor randomTrafficLightColor = rng.randomTrafficLightColor();
@@ -83,6 +85,15 @@ GridWorld::GridWorld(unsigned int seed, int w, int h, int numTics, int nOMC, int
                                               this);
         addObject(move(light));
     }
+
+    //Creating the self driving vehicle
+    //Generate random position for the self driving vehicle
+    Position randomSelfDrivingVehiclePosition = rng.randomPosition(width, height);
+    auto sdv = make_unique<SelfDrivingVehicle>("SDCAR",
+                                               randomSelfDrivingVehiclePosition,
+                                               this,
+                                               mCT, targetPositions);
+    addObject(move(sdv));
 
 }
 

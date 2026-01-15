@@ -14,6 +14,7 @@
 #include "../objects/StationaryVehicle.h"
 #include "../objects/TrafficLight.h"
 #include "../objects/TrafficSign.h"
+#include "../vehicle/SelfDrivingCar.h"
 #include "WorldObject.h" //Base class for all objects
 
 
@@ -25,12 +26,16 @@ private:
     int currentTick, numberOfTics;                              //The current tick the world is in
     int numOfMovingCars, numOfMovingBikes;                      //The number of moving cars and bikes in the grid
     int numOfTrafficLights, numOfStopSigns, numOfStoppedCars;   //The number of traffic lights, stop signs and stopped cars in the grid
+    int minConfidenceThreshold;                                 //The minimum confidence threshold for the self driving vehicle
+    vector<Position*> targetPositions;                          //The target positions of the self driving vehicle
     vector<unique_ptr<WorldObject>> objects;                    //The objects inside the world
     RandomGenerators rng;                                       //Random generator instance
 
 public:
     //Constructor of the grid world
-    GridWorld(unsigned int seed, int width, int height, int numTicks, int nOMC, int nOMB, int nOTL, int nOSS, int nOSC);
+    GridWorld(unsigned int seed, int width, int height, int numTicks,
+              int nOMC, int nOMB, int nOTL, int nOSS, int nOSC, int mCT,
+              vector<Position*> targetPositions);
 
     //Adds objects to the grid
     void addObject(unique_ptr<WorldObject> obj);

@@ -16,7 +16,8 @@ SRC = main.cpp \
 	  src/objects/MovingBike.cpp \
 	  src/objects/TrafficSign.cpp \
 	  src/objects/TrafficLight.cpp \
-	  src/objects/StationaryVehicle.cpp
+	  src/objects/StationaryVehicle.cpp \
+	  src/vehicle/SelfDrivingCar.cpp
 
 OBJ = $(SRC:%.cpp=$(BUILD_DIR)/%.o)
 
