@@ -11,6 +11,10 @@ bool Position::operator==(const Position& other) const {
     return x == other.getX() && y==other.getY();
 }
 
+Position Position::operator+(const Position& other) const {
+    return Position(x+other.x, y+other.y);
+}
+
 int Position::ManDist(const Position& other) const {
     return abs(x- other.x) + abs(y- other.y);
 }

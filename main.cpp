@@ -22,10 +22,12 @@ void printHelp () {
     cout << " --numTrafficLights <n>            Number of traffic lights (default : 2) " << endl;
     cout << " --simulationTicks <n>             Maximum simulation ticks (default : 100) " << endl;
     cout << " --minConfidenceThreshold <n>      Minimum confidence cutoff (default : 40) " << endl;
+    cout << " --povSetting <str>                POV visualisation, takes only front or around strings (default : around)" << endl;
+    cout << " --radius <n>                      Radius of the grid for POV visualization (default : 5)" << endl;
     cout << " --gps <x1> <y1> [ x2 y2 . . . ]   GPS target coordinates (required) " << endl;
     cout << " --help                            Show this help message" << endl << endl;
     cout << "Example usage : " << endl;
-    cout << " ./main --seed 12 --dimY 50 --gps 10 20 32 15" << endl;
+    cout << " ./simulation.exe --seed 12 --dimY 50 --gps 10 20 32 15" << endl;
 }
 
 //Function to check if a string is actually a number
@@ -99,6 +101,8 @@ int main (int argc, char* argv[]) {
     int numTrafficLights = 2;
     int simulationTicks = 100;
     int minConfidenceThreshold = 40;
+    string povSetting = "front";
+    int radius = 5;
     vector<Position*> targetPositions;
 
     //Check for help first
@@ -156,6 +160,17 @@ int main (int argc, char* argv[]) {
             return 0;
         }
 
+        //POV visualization setting
+        else if (currArg == "--povSetting") {
+
+            string nextArg = argv[i+1];
+
+            if (nextArg == "around") { povSetting = "around"; }
+            else if (nextArg == "front") { povSetting = "front"; }
+            else { cout << "ERROR: Wrong argument following '" << currArg << "'" << endl; return -1;}
+
+        }
+
         else {
             //Check to ensure current argument's structural validity
             if (!checkArgumentValidity(i, argc, argv, currArg)) {return -1;}
@@ -191,6 +206,9 @@ int main (int argc, char* argv[]) {
 
             //Min confidence threshold codename
             else if (currArg == "--minConfidenceThreshold") { minConfidenceThreshold = value; }
+
+            //Range of pov round visualisation
+            else if (currArg == "--radius") { radius = value; }
 
             //Case of wrongly written codename
             else {
@@ -244,14 +262,16 @@ int main (int argc, char* argv[]) {
     cout << "Traffic lights: " << numTrafficLights << endl;
     cout << "Total ticks: " << simulationTicks << endl;
     cout << "Target Positions: " << targetPositions.size() << endl;
-    cout << "|=========================================|" << endl;
+    cout << "Pov visualisation type selected: " << povSetting << endl;
+    cout << "Radius: " << radius << endl;
+    cout << "|=========================================|\n" << endl;
 
     cout << "|=====Creating Grid=====|" << endl;
 
     //Create grid
     GridWorld* grid = new GridWorld(seedNumber, dimX, dimY, simulationTicks, numMovingCars, numMovingBikes, 
                                     numTrafficLights, numStopSigns, numParkedCars, minConfidenceThreshold,
-                                    targetPositions);
+                                    targetPositions, povSetting, radius);
     //Run simulation
     while (grid->getCurrentTick() < simulationTicks) { 
         cout << "\n|=============== Tick: " << grid->getCurrentTick()+1 << " ===============|" << endl;

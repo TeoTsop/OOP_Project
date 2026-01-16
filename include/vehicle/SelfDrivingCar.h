@@ -11,19 +11,15 @@
 #include "../sensors/LidarSensor.h"
 #include "../sensors/CameraSensor.h"
 #include "../sensors/RadarSensor.h"
-#include "../world/MovingObject.h"
+#include "../sensors/Sensor.h"
+#include "SensorFusionEngine.h"
+#include "../world/MovingObject.h" //Included since it is the parent class of the autonomous vehicle class
 
 class SelfDrivingVehicle : public MovingObject {
     private:
-        int minConfidenceThreshold;
-        std::vector<Position*> targetPositions;
-
-        //Sensors of the self driving vehicle
-        /*
-        LidarSensor lSenor;
-        CameraSensor cSensor;
-        RadarSensor rSensor;
-        */
+        int minConfidenceThreshold; //Min confidence threshold
+        std::vector<Position*> targetPositions; //Traget positions for the vehicle
+        std::vector<SensorReading> sensorsData; //Data of the sensors of the vehicle
 
     public:
         //Constructor for the self driving car
@@ -34,6 +30,9 @@ class SelfDrivingVehicle : public MovingObject {
         //Updating the state of the self driving car
         //Overriding from the Moving Objects parent class
         void update() override;
+
+        std::vector<SensorReading> getSensorData ();
+        void setSensorData (std::vector<SensorReading> sR);
 
         //Destructor for the self driving vehicle
         ~SelfDrivingVehicle ();

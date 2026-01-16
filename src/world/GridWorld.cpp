@@ -10,11 +10,11 @@ using namespace std;
 //Constructor for the grid world
 //Call the construction of all the objects in the grid
 GridWorld::GridWorld(unsigned int seed, int w, int h, int numTics, int nOMC, int nOMB, int nOTL,
-                     int nOSS, int nOSC, int mCT, vector<Position*> targetPositions)
+                     int nOSS, int nOSC, int mCT, vector<Position*> targetPositions, const string& povSetting, int radius)
                     : seed(seed), width(w), height(h), currentTick(0), numberOfTics(numTics),
                       numOfMovingCars(nOMC), numOfMovingBikes(nOMB), numOfTrafficLights(nOTL),
                       numOfStopSigns(nOSS), numOfStoppedCars(nOSC), minConfidenceThreshold(mCT),
-                      targetPositions(targetPositions), rng(seed) {
+                      targetPositions(targetPositions), povSetting(povSetting), radius(radius), rng(seed) {
     
     //Constructing and placing all the moving objects first
     //Constructing the moving cars first
@@ -157,31 +157,136 @@ vector<WorldObject*> GridWorld::getObjectsAt(const Position& pos) const {
     return result;
 }
 
+//Helpfull functions for the pov visualisation
+//Functions to turn the information of the objects in the world to string
+string directionToString (Direction dir) {
+    switch(dir) {
+        case Direction::NORTH: return "NORTH";
+        case Direction::EAST: return "EAST";
+        case Direction::SOUTH: return "SOUTH";
+        default: return "WEST";
+    }
+};
+
+string speedToString (SpeedState speed) {
+    switch(speed) {
+        case SpeedState::FULL_SPEED: return "FULL SPEED";
+        case SpeedState::HALF_SPEED: return "HALF SPEED";
+        default: return "STOPPED";
+    }
+};
+
 //Function to visualise the grid
 void GridWorld::renderer () const {
+    
+    //Create an empty grid
+    vector<vector<char>> grid(height, vector<char>(width, '.'));
+
+    //Fill the grid vector with all the objects
+    for (const auto& obj : objects) {
+        const Position& position = obj->getPosition();
+        if (isInBounds(position)) { grid[position.getY()][position.getX()] = obj->getGlyph(); }
+    }
 
     //Visualization Full
     if (currentTick == 1 || currentTick == numberOfTics) {
-        //Create an empty grid
-        vector<vector<char>> grid(height, vector<char>(width, '.'));
-
-        //Fill the grid vector with all the objects
-        for (const auto& obj : objects) {
-            const Position& position = obj->getPosition();
-            if (isInBounds(position)) { grid[position.getX()][position.getY()] = obj->getGlyph(); }
-        }
-
         //Print the visualisation of the grid
-        for (int y=0; y<height; y++) {
+        for (int y=height-1; y>=0; y--) {
             for (int x=0; x<width; x++) {
-                cout << grid[x][y] << ' ';
+                cout << grid[y][x] << ' ';
             }
             cout << '\n';
         }
     }
     //Visualization POV
     else {
-        return; //Need sensors to do
+        //Find the self driving vehicle
+        SelfDrivingVehicle* vehicle = nullptr;
+        for (const auto& obj : objects) {
+            if (auto* sdv_ptr = dynamic_cast<SelfDrivingVehicle*>(obj.get())) {
+                vehicle = sdv_ptr;
+                break;
+            }
+        }
+
+        //If there is no vehicle found end the visualization
+        if (!vehicle) {
+            cout << "[POV] No autonomous vehicle found!" << endl;
+            return;
+        }
+
+        //Store the vehicle's information
+        Position vehiclePosition = vehicle->getPosition();
+        Direction vehicleDirection = vehicle->getDirection();
+        SpeedState vehicleSpeed = vehicle->getSpeedState();
+
+        cout << "\n===POV Visualization===" << endl;
+        cout << "Vehicle: " << vehicle->getId() << " at ("
+             << vehiclePosition.getX() << "," << vehiclePosition.getY()
+             << ") heading towards the " << directionToString(vehicleDirection)
+             << " going at " << speedToString(vehicleSpeed) << endl;
+
+        //Helper for safe out of bounds drawing
+        auto drawCell = [&](int x, int y) {
+            if (x >= 0 && x < width && y >= 0 && y < height) { cout << grid[y][x] << ' ';}
+            else { cout << '#' << ' '; }
+        };
+
+        //Around pov setting (a grid with radius (radius) with center the autonomus vehicle)
+        if (povSetting == "around") {
+            int half = radius/2 + 1;
+
+            //Print the visualisation of the POV
+            for (int y=vehiclePosition.getY() + half; y>= vehiclePosition.getY() - half; y--) {
+                for (int x=vehiclePosition.getX() - half; x<=vehiclePosition.getX() + half; x++) {
+                    drawCell(x, y);
+                }
+                cout << '\n';
+            }
+        }
+        //Front pov setting (a grid with radius (radius) in front of the autonomus vehicle)
+        else if (povSetting == "front") {
+            int half = radius/2;
+
+            switch (vehicleDirection) {
+                case Direction::NORTH: {
+                    for (int y=vehiclePosition.getY() + 1; y<= vehiclePosition.getY() + radius; y++) {
+                        for (int x=vehiclePosition.getX() - half; x<=vehiclePosition.getX() + half; x++) {
+                            drawCell(x, y);
+                        }
+                        cout << '\n';
+                    }
+                    break;
+                }
+                case Direction::SOUTH: {
+                    for (int y=vehiclePosition.getY() - 1; y<= vehiclePosition.getY() - radius; y--) {
+                        for (int x=vehiclePosition.getX() - half; x<=vehiclePosition.getX() + half; x++) {
+                            drawCell(x, y);
+                        }
+                        cout << '\n';
+                    }
+                    break;
+                }
+                case Direction::EAST: {
+                    for (int y=vehiclePosition.getY() - half; y<= vehiclePosition.getY() + half; y++) {
+                        for (int x=vehiclePosition.getX() + 1; x<=vehiclePosition.getX() + radius; x++) {
+                            drawCell(x, y);
+                        }
+                        cout << '\n';
+                    }
+                    break;
+                }
+                default: {
+                    for (int y=vehiclePosition.getY() - half; y<= vehiclePosition.getY() + half; y++) {
+                        for (int x=vehiclePosition.getX() - 1; x<=vehiclePosition.getX() - radius; x--) {
+                            drawCell(x, y);
+                        }
+                        cout << '\n';
+                    }
+                    break;
+                }
+            }
+        }
     }
 }
 

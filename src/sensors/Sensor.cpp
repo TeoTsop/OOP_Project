@@ -1,10 +1,23 @@
 #include "../../include/sensors/Sensor.h"
-using namespace std;
+#include "../../include/world/GridWorld.h"
 
+Sensor::Sensor(SensorType sensor, int r, int acc1, int acc2)
+    : sensor(sensor), range(r), classificationAccuracy(acc1), distanceAccuracy(acc2) {}
 
-// Constructor of base class Sensor
-Sensor::Sensor() {}
+void Sensor::clear () {
+    readings.clear();
+}
 
-// Getters
-const vector <const WorldObject*>& Sensor:: getDetectedObjects() const { return detectedObjects; }
-const vector <Position>& Sensor:: getDetectedPositions() const { return detectedPositions; }
+double Sensor::computeConfidence () {
+    if (readings.empty()) {
+        return 0.0;
+    }
+
+    double sum = 0.0;
+    for (const auto& r : readings) {
+        sum += r.getReadingConfidence();
+    }
+
+    confidence = (sum / readings.size())/100;
+    return confidence;
+}

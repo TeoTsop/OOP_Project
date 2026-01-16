@@ -29,13 +29,16 @@ private:
     int minConfidenceThreshold;                                 //The minimum confidence threshold for the self driving vehicle
     vector<Position*> targetPositions;                          //The target positions of the self driving vehicle
     vector<unique_ptr<WorldObject>> objects;                    //The objects inside the world
+    std::string povSetting;                                     //Setting for the pov visualisation
+    int radius;                                                 //Radius for the around pov visualisation
     RandomGenerators rng;                                       //Random generator instance
 
 public:
     //Constructor of the grid world
     GridWorld(unsigned int seed, int width, int height, int numTicks,
               int nOMC, int nOMB, int nOTL, int nOSS, int nOSC, int mCT,
-              vector<Position*> targetPositions);
+              vector<Position*> targetPositions, const std::string& povSetting,
+              int radius);
 
     //Adds objects to the grid
     void addObject(unique_ptr<WorldObject> obj);

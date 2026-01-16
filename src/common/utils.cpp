@@ -76,12 +76,3 @@ TrafficSignType RandomGenerators::randomTrafficSignType () {
     //Stor=0, Speed Limit=1, Turn Left=2, Turn Right=3
     return static_cast<TrafficSignType>(randomInteger(0,3));
 }
-
-//Randomizer not using the world seed
-namespace Randomizer {
-
-    int randomInteger (int min, int max) {
-        return rand() % (max - min + 1) + min;
-    }
-
-}

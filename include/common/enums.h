@@ -35,3 +35,8 @@ enum TrafficSignType {STOP,
                       TURN_LEFT,
                       TURN_RIGHT
                      };
+
+//All sensor types
+enum SensorType {LIDAR,
+                 CAMERA,
+                 RADAR};
